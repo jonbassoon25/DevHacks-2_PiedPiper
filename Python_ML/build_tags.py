@@ -1,4 +1,4 @@
-"""Minimal build_tags: produce fab_tags_array.npy and fab_tags_array.json only."""
+"""Minimal build_tags: produce location_tags.npy and location_tags.json only."""
 
 import os
 import json
@@ -14,9 +14,9 @@ try:
 except Exception:
     requests = None
 
-CSV_FILENAME = "fab_data.csv"
-TAGS_ARRAY_NPY = "fab_tags_array.npy"
-TAGS_ARRAY_JSON = "fab_tags_array.json"
+CSV_FILENAME = "../location_database.csv"
+TAGS_ARRAY_NPY = "location_tags.npy"
+TAGS_ARRAY_JSON = "location_tags.json"
 OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
 OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "gemma2")
 
@@ -149,7 +149,7 @@ def main():
     used_ollama = False
     failed_count = 0
     for i, row in df.iterrows():
-        text = f"Generate 5 to 8 short, single-word tags (in lowercase, hyphenated if multi-word) that best describe the following business. Return them as a comma-separated list only.\n\nDescription: {row.get('Description','')}\nActivity: {row.get('Activity','')}"
+        text = f"Generate 5 to 8 short, single-word tags (in lowercase, hyphenated if multi-word) that best describe the following business. Return them as a comma-separated list only.\n\nName: {row.get('Name','')}\nDescription: {row.get('Description','')}"
 
         if ollama_ok:
             try:
