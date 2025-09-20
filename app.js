@@ -42,10 +42,17 @@ io.on('connection', (socket) => {
 		if ("count" in Object.keys(data)) {
 			count = data["count"];
 		}
+		console.log(data);
 		// TODO: return selected database entries as a list [ [database row], [database row], ... ]
 	});
 
+	socket.on("user_like", (data) => {
 
+	});
+
+	socket.on("user_dislike", (data) => {
+
+	});
 
 	// When a user has disconnected
 	socket.on('disconnect', () => {
