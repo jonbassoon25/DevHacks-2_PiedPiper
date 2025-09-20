@@ -38,7 +38,7 @@ io.on('connection', (socket) => {
 
 
 	socket.on("request_next_entries", (data) => {
-		count = 10
+		let count = 10
 		if ("count" in Object.keys(data)) {
 			count = data["count"];
 		}
@@ -46,12 +46,10 @@ io.on('connection', (socket) => {
 		// TODO: return selected database entries as a list [ [database row], [database row], ... ]
 	});
 
-	socket.on("user_like", (data) => {
-
-	});
-
-	socket.on("user_dislike", (data) => {
-
+	socket.on("user_feedback", (data) => {
+		let liked = data["liked"] == true;
+		let entry = data["place"];
+		console.log(data);
 	});
 
 	// When a user has disconnected
