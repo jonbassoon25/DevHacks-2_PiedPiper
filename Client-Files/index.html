@@ -111,7 +111,7 @@
         // Emit the websocket request per your spec: event name _next_next_entries with an object containing key `count`.
         async function requestNext(count, location, activity) {
           return new Promise((resolve, reject) => {
-            socket.emit('_next_next_entries', { count: count, location: location || '', activity: activity || '' });
+            socket.emit('request_next_entries', { count: count, location: location || '', activity: activity || '' });
             // listen for several possible response event names (server may use different one)
             const handlers = {};
             const names = ['next_entries', '_next_next_entries_result', '_next_next_entries', 'response_next_entries', 'entries'];
