@@ -63,6 +63,8 @@
         function makeCard(row) {
           const node = tpl.content.cloneNode(true);
           const card = node.querySelector('.card');
+          // store the raw row for later feedback events
+          card.__place = row;
           const img = card.querySelector('img');
           img.src = row['URL'] ? row['URL'] : 'https://source.unsplash.com/600x400/?' + encodeURIComponent((row['Name']||'place').split(' ')[0]);
           img.alt = row['Name'] || 'place';
@@ -102,7 +104,19 @@
           window.addEventListener('pointerup', up);
         }
 
-        function swipe(card, liked){ card.style.transition='transform 300ms ease, opacity 300ms'; const dir = liked?1:-1; card.style.transform=`translate(${dir*1000}px,-100px) rotate(${dir*30}deg)`; card.style.opacity='0'; history.push(card); setTimeout(()=>{ card.remove(); if(!stack.querySelector('.card')) stack.innerHTML=`<div class="notice">You're all caught up.</div>`; },350); }
+        function swipe(card, liked){ 
+          card.style.transition='transform 300ms ease, opacity 300ms'; 
+          const dir = liked?1:-1; 
+          card.style.transform=`translate(${dir*1000}px,-100px) rotate(${dir*30}deg)`; 
+          card.style.opacity='0'; 
+          history.push(card);
+          // emit feedback over socket
+          try {
+            const payload = { action: liked ? 'like' : 'dislike', place: card.__place || null };
+            socket.emit('user_feedback', payload);
+          } catch (e) { console.warn('feedback emit failed', e); }
+          setTimeout(()=>{ card.remove(); if(!stack.querySelector('.card')) stack.innerHTML=`<div class="notice">You're all caught up.</div>`; },350); 
+        }
 
         likeBtn.addEventListener('click', ()=>{ const top = stack.querySelector('.card'); if(top) swipe(top, true); });
         nopeBtn.addEventListener('click', ()=>{ const top = stack.querySelector('.card'); if(top) swipe(top, false); });
