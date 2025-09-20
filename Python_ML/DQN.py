@@ -9,7 +9,7 @@ class recommendation_model(tf.keras.Model):
 			learning_rate = 0.001, 
 			discount_factor = 0.99, exploration_prob = 1.0, 
 			exploration_decay = 0.995, min_exploration_prob = 0.05):
-		super(DQN, self).__init__()
+		super(recommendation_model, self).__init__()
 		self.dense1 = tf.keras.layers.Dense(num_inputs, activation='relu') # first hidden layer / input layer
 		self.dense2 = tf.keras.layers.Dense(24, activation='relu') # second hidden layer
 		self.output_layer = tf.keras.layers.Dense(num_actions, activation='linear') # output layer
