@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>AZ Places — Swipe & Discover</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <main class="app">
+      <header class="header">
+        <div class="brand">
+          <h1>AZ Places</h1>
+          <p class="tagline">Find things to do in Arizona — swipe right to save</p>
+        </div>
+        <form id="search" class="search">
+          <input id="location" placeholder="Location (e.g. Chandler, Arizona)" aria-label="location" />
+          <input id="activity" placeholder="Activity (e.g. Hiking, Museum, Coffee)" aria-label="activity" />
+          <button type="submit" class="btn primary">Go</button>
+        </form>
+      </header>
+
+      <section id="viewport" class="viewport">
+        <div id="stack" class="stack">
+          <div class="notice">Enter a location and activity, then press Go</div>
+        </div>
+      </section>
+
+      <div class="controls">
+        <button id="rewind" class="circle">⟲</button>
+        <button id="nope" class="circle no">✖</button>
+        <button id="like" class="circle yes">❤</button>
+      </div>
+
+      <template id="cardTpl">
+        <article class="card">
+          <div class="card__image"><img src="" alt=""/></div>
+          <div class="card__info">
+            <div class="meta"><span class="activity">Activity</span><span class="rating">★ <b class="score">4.5</b> <span class="count">(0)</span></span></div>
+            <h2 class="name">Place Name</h2>
+            <p class="location">Location</p>
+            <p class="desc">Short description here...</p>
+            <a class="source" target="_blank" rel="noopener">View source</a>
+          </div>
+        </article>
+      </template>
+
+      <script>
+        // Tiny CSV parser (handles quoted commas)
+        function parseCSV(text) {
+          const lines = text.split(/\r?\n/).filter(Boolean);
+          const header = lines.shift().split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/).map(h=>h.trim());
+          return lines.map(line => {
+            const cols = line.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/);
+            const obj = {};
+            header.forEach((h,i) => obj[h] = (cols[i]||'').replace(/^"|"$/g, '').trim());
+            return obj;
+          });
+        }
+
+        const stack = document.getElementById('stack');
+        const tpl = document.getElementById('cardTpl');
+        const searchForm = document.getElementById('search');
+        const locationInput = document.getElementById('location');
+        const activityInput = document.getElementById('activity');
+        const likeBtn = document.getElementById('like');
+        const nopeBtn = document.getElementById('nope');
+        const rewindBtn = document.getElementById('rewind');
+
+        let data = [];
+        let history = [];
+
+        async function loadData() {
+          try {
+            const res = await fetch('../location_database.csv');
+            if (!res.ok) throw new Error('Failed to fetch CSV: ' + res.status);
+            const text = await res.text();
+            data = parseCSV(text);
+          } catch (e) {
+            stack.innerHTML = `<div class="notice error">Could not load data. Make sure the server is running.</div>`;
+            console.error(e);
+          }
+        }
+
+        function matchRow(row, loc, activity) {
+          const l = (loc||'').toLowerCase();
+          const a = (activity||'').toLowerCase();
+          const name = (row['Name']||'').toLowerCase();
+          const desc = (row['Description']||'').toLowerCase();
+          const location = (row['Location']||'').toLowerCase();
+          const locMatch = !l || location.includes(l) || name.includes(l) || desc.includes(l);
+          const actMatch = !a || name.includes(a) || desc.includes(a) || (row['URL']||'').toLowerCase().includes(a);
+          return locMatch && actMatch;
+        }
+
+        function makeCard(row) {
+          const node = tpl.content.cloneNode(true);
+          const card = node.querySelector('.card');
+          const img = card.querySelector('img');
+          img.src = row['URL'] ? row['URL'] : 'https://source.unsplash.com/600x400/?' + encodeURIComponent(row['Name'].split(' ')[0] || 'place');
+          img.alt = row['Name'] || 'place';
+          card.querySelector('.activity').textContent = row['Name'].split(' ')[0] || '';
+          card.querySelector('.score').textContent = row['Rating'] || 'N/A';
+          card.querySelector('.count').textContent = row['Reviews'] ? `(${row['Reviews']})` : '';
+          card.querySelector('.name').textContent = row['Name'] || '';
+          card.querySelector('.location').textContent = row['Location'] || '';
+          card.querySelector('.desc').textContent = row['Description'] || ''; 
+          const link = card.querySelector('.source');
+          link.href = row['URL'] || '#';
+          link.textContent = row['URL'] ? 'View source' : '';
+          addDrag(card);
+          return card;
+        }
+
+        function renderList(rows) {
+          stack.innerHTML = '';
+          if (!rows.length) { stack.innerHTML = `<div class="notice">No results found. Try another search.</div>`; return; }
+          for (let i = rows.length - 1; i >= 0; i--) {
+            const c = makeCard(rows[i]);
+            c.style.setProperty('--i', i);
+            stack.appendChild(c);
+          }
+        }
+
+        function addDrag(card) {
+          let startX=0,startY=0,drag=false;
+          function down(e){ drag=true; startX = e.clientX || e.touches?.[0]?.clientX; startY = e.clientY || e.touches?.[0]?.clientY; card.classList.add('dragging'); }
+          function move(e){ if(!drag) return; const x = (e.clientX||e.touches?.[0]?.clientX)-startX; const y = (e.clientY||e.touches?.[0]?.clientY)-startY; card.style.transform = `translate(${x}px, ${y}px) rotate(${x/20}deg)`; }
+          function up(e){ if(!drag) return; drag=false; card.classList.remove('dragging'); const endX = e.clientX || (e.changedTouches && e.changedTouches[0].clientX) || 0; const delta = endX - startX; if(Math.abs(delta)>120){ const liked = delta>0; swipe(card, liked); } else { card.style.transform=''; } }
+          card.addEventListener('pointerdown', down);
+          window.addEventListener('pointermove', move);
+          window.addEventListener('pointerup', up);
+        }
+
+        function swipe(card, liked){ card.style.transition='transform 300ms ease, opacity 300ms'; const dir = liked?1:-1; card.style.transform=`translate(${dir*1000}px,-100px) rotate(${dir*30}deg)`; card.style.opacity='0'; history.push(card); setTimeout(()=>{ card.remove(); if(!stack.querySelector('.card')) stack.innerHTML=`<div class="notice">You're all caught up.</div>`; },350); }
+
+        likeBtn.addEventListener('click', ()=>{ const top = stack.querySelector('.card'); if(top) swipe(top, true); });
+        nopeBtn.addEventListener('click', ()=>{ const top = stack.querySelector('.card'); if(top) swipe(top, false); });
+        rewindBtn.addEventListener('click', ()=>{ const last = history.pop(); if(last){ last.style.opacity='1'; last.style.transform=''; stack.appendChild(last); } });
+
+        searchForm.addEventListener('submit', async (e)=>{
+          e.preventDefault();
+          const loc = locationInput.value.trim();
+          const act = activityInput.value.trim();
+          if(!data.length) await loadData();
+          const matches = data.filter(r => matchRow(r, loc, act));
+          renderList(matches);
+        });
+
+        // preload
+        document.addEventListener('DOMContentLoaded', ()=>{ loadData(); });
+      </script>
+    </main>
+  </body>
+</html>
