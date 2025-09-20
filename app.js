@@ -28,6 +28,16 @@ io.on('connection', (socket) => {
 	connections = io.engine.clientsCount;
 	console.log("\nConnected Users: " + connections.toString());
 
+	socket.on("request_next_entries", (data) => {
+		count = 10
+		if ("count" in Object.keys(data)) {
+			count = data["count"];
+		}
+		// TODO: return selected database entries as a list [ [database row], [database row], ... ]
+	});
+
+	
+
 	// When a user has disconnected
 	socket.on('disconnect', () => {
 		connections = io.engine.clientsCount;
