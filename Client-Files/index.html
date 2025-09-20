@@ -46,19 +46,9 @@
         </article>
       </template>
 
+      <script src="/socket.io/socket.io.js"></script>
       <script>
-        // Tiny CSV parser (handles quoted commas)
-        function parseCSV(text) {
-          const lines = text.split(/\r?\n/).filter(Boolean);
-          const header = lines.shift().split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/).map(h=>h.trim());
-          return lines.map(line => {
-            const cols = line.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/);
-            const obj = {};
-            header.forEach((h,i) => obj[h] = (cols[i]||'').replace(/^"|"$/g, '').trim());
-            return obj;
-          });
-        }
-
+        const socket = io();
         const stack = document.getElementById('stack');
         const tpl = document.getElementById('cardTpl');
         const searchForm = document.getElementById('search');
@@ -68,44 +58,20 @@
         const nopeBtn = document.getElementById('nope');
         const rewindBtn = document.getElementById('rewind');
 
-        let data = [];
         let history = [];
-
-        async function loadData() {
-          try {
-            const res = await fetch('../location_database.csv');
-            if (!res.ok) throw new Error('Failed to fetch CSV: ' + res.status);
-            const text = await res.text();
-            data = parseCSV(text);
-          } catch (e) {
-            stack.innerHTML = `<div class="notice error">Could not load data. Make sure the server is running.</div>`;
-            console.error(e);
-          }
-        }
-
-        function matchRow(row, loc, activity) {
-          const l = (loc||'').toLowerCase();
-          const a = (activity||'').toLowerCase();
-          const name = (row['Name']||'').toLowerCase();
-          const desc = (row['Description']||'').toLowerCase();
-          const location = (row['Location']||'').toLowerCase();
-          const locMatch = !l || location.includes(l) || name.includes(l) || desc.includes(l);
-          const actMatch = !a || name.includes(a) || desc.includes(a) || (row['URL']||'').toLowerCase().includes(a);
-          return locMatch && actMatch;
-        }
 
         function makeCard(row) {
           const node = tpl.content.cloneNode(true);
           const card = node.querySelector('.card');
           const img = card.querySelector('img');
-          img.src = row['URL'] ? row['URL'] : 'https://source.unsplash.com/600x400/?' + encodeURIComponent(row['Name'].split(' ')[0] || 'place');
+          img.src = row['URL'] ? row['URL'] : 'https://source.unsplash.com/600x400/?' + encodeURIComponent((row['Name']||'place').split(' ')[0]);
           img.alt = row['Name'] || 'place';
-          card.querySelector('.activity').textContent = row['Name'].split(' ')[0] || '';
+          card.querySelector('.activity').textContent = (row['Name']||'').split(' ')[0] || '';
           card.querySelector('.score').textContent = row['Rating'] || 'N/A';
           card.querySelector('.count').textContent = row['Reviews'] ? `(${row['Reviews']})` : '';
           card.querySelector('.name').textContent = row['Name'] || '';
           card.querySelector('.location').textContent = row['Location'] || '';
-          card.querySelector('.desc').textContent = row['Description'] || ''; 
+          card.querySelector('.desc').textContent = row['Description'] || '';
           const link = card.querySelector('.source');
           link.href = row['URL'] || '#';
           link.textContent = row['URL'] ? 'View source' : '';
@@ -113,9 +79,12 @@
           return card;
         }
 
-        function renderList(rows) {
-          stack.innerHTML = '';
-          if (!rows.length) { stack.innerHTML = `<div class="notice">No results found. Try another search.</div>`; return; }
+        function renderRows(rows, append = false) {
+          if (!append) stack.innerHTML = '';
+          if (!rows || !rows.length) {
+            if (!append) stack.innerHTML = `<div class="notice">No results returned.</div>`;
+            return;
+          }
           for (let i = rows.length - 1; i >= 0; i--) {
             const c = makeCard(rows[i]);
             c.style.setProperty('--i', i);
@@ -139,17 +108,64 @@
         nopeBtn.addEventListener('click', ()=>{ const top = stack.querySelector('.card'); if(top) swipe(top, false); });
         rewindBtn.addEventListener('click', ()=>{ const last = history.pop(); if(last){ last.style.opacity='1'; last.style.transform=''; stack.appendChild(last); } });
 
+        // Emit the websocket request per your spec: event name _next_next_entries with an object containing key `count`.
+        async function requestNext(count, location, activity) {
+          return new Promise((resolve, reject) => {
+            socket.emit('request_next_entries', { count: count, location: location || '', activity: activity || '' });
+            // listen for several possible response event names (server may use different one)
+            const handlers = {};
+            const names = ['next_entries', '_next_next_entries_result', '_next_next_entries', 'response_next_entries', 'entries'];
+            let settled = false;
+            function done(data) {
+              if (settled) return; settled = true;
+              // cleanup
+              names.forEach(n => socket.off(n, handlers[n]));
+              resolve(data);
+            }
+            names.forEach(n => {
+              handlers[n] = (payload) => { done(payload); };
+              socket.on(n, handlers[n]);
+            });
+            // timeout
+            setTimeout(()=>{
+              if (!settled) {
+                names.forEach(n => socket.off(n, handlers[n]));
+                reject(new Error('Socket response timeout'));
+              }
+            }, 5000);
+          });
+        }
+
         searchForm.addEventListener('submit', async (e)=>{
           e.preventDefault();
+          stack.innerHTML = `<div class="notice">Requesting results...</div>`;
           const loc = locationInput.value.trim();
           const act = activityInput.value.trim();
-          if(!data.length) await loadData();
-          const matches = data.filter(r => matchRow(r, loc, act));
-          renderList(matches);
+          try {
+            const rows = await requestNext(12, loc, act);
+            // server may send an object wrapper
+            const data = Array.isArray(rows) ? rows : (rows && rows.results) ? rows.results : [];
+            renderRows(data, false);
+          } catch (err) {
+            console.error(err);
+            stack.innerHTML = `<div class="notice">Request failed — check server logs.</div>`;
+          }
         });
 
-        // preload
-        document.addEventListener('DOMContentLoaded', ()=>{ loadData(); });
+        // when remaining cards low, request more
+        const observer = new MutationObserver(async ()=>{
+          const remaining = stack.querySelectorAll('.card').length;
+          if (remaining <= 2) {
+            const loc = locationInput.value.trim();
+            const act = activityInput.value.trim();
+            try {
+              const rows = await requestNext(6, loc, act);
+              const data = Array.isArray(rows) ? rows : (rows && rows.results) ? rows.results : [];
+              renderRows(data, true);
+            } catch (e) { console.warn('prefetch failed', e); }
+          }
+        });
+        observer.observe(stack, { childList: true });
       </script>
     </main>
   </body>
