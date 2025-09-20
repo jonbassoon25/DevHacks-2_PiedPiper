@@ -1,0 +1,8 @@
+Python_ML/bin
+Python_ML/include
+Python_ML/lib
+Python_ML/pyvenv.cfg
+package-lock.json
+package.json
+node_modules
+Python_ML/Scripts
