@@ -8,6 +8,14 @@ const http = require('http').Server(app);
 
 const io = require('socket.io')(http);
 
+const path = require('path');
+
+//------------------------------------------------------------------------------------//
+//File loads
+
+//const LocationDatabase = require("location_database.json");
+
+
 //------------------------------------------------------------------------------------//
 //App Commands
 
@@ -28,6 +36,7 @@ io.on('connection', (socket) => {
 	connections = io.engine.clientsCount;
 	console.log("\nConnected Users: " + connections.toString());
 
+
 	socket.on("request_next_entries", (data) => {
 		count = 10
 		if ("count" in Object.keys(data)) {
@@ -36,7 +45,7 @@ io.on('connection', (socket) => {
 		// TODO: return selected database entries as a list [ [database row], [database row], ... ]
 	});
 
-	
+
 
 	// When a user has disconnected
 	socket.on('disconnect', () => {
