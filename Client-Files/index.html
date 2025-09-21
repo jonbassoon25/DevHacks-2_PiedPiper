@@ -153,15 +153,25 @@
         function addDrag(card) {
           let startX=0,startY=0,drag=false;
           let lastX = 0;
-          function down(e){ drag=true; startX = e.clientX || e.touches?.[0]?.clientX; startY = e.clientY || e.touches?.[0]?.clientY; lastX = startX; card.classList.add('dragging'); card.style.transition = 'none'; }
+          let startedOnImage = false;
+          function down(e){
+            // only start drag if pointerdown occurred on the image area
+            const imgArea = card.querySelector('.card__image');
+            if (!imgArea) return;
+            const target = e.target || e.srcElement;
+            if (!imgArea.contains(target)) return;
+            startedOnImage = true;
+            drag=true; startX = e.clientX || e.touches?.[0]?.clientX; startY = e.clientY || e.touches?.[0]?.clientY; lastX = startX; card.classList.add('dragging'); card.style.transition = 'none';
+          }
           function move(e){ if(!drag) return; const x = (e.clientX||e.touches?.[0]?.clientX)-startX; const y = (e.clientY||e.touches?.[0]?.clientY)-startY; lastX = x; const rot = Math.max(Math.min(x/12, 25), -25); const scale = 1 - Math.min(Math.abs(x)/1500, 0.06); card.style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg) scale(${scale})`; 
             // toggle badges
             if (x > 30) { card.classList.add('liking'); card.classList.remove('noping'); }
             else if (x < -30) { card.classList.add('noping'); card.classList.remove('liking'); }
             else { card.classList.remove('liking'); card.classList.remove('noping'); }
           }
-          function up(e){ if(!drag) return; drag=false; card.classList.remove('dragging'); card.style.transition = ''; const endX = e.clientX || (e.changedTouches && e.changedTouches[0].clientX) || 0; const delta = endX - startX; if(Math.abs(delta)>120){ const liked = delta>0; card.classList.remove('liking'); card.classList.remove('noping'); swipe(card, liked); } else { card.style.transform=''; card.classList.remove('liking'); card.classList.remove('noping'); } }
-          card.addEventListener('pointerdown', down);
+          function up(e){ if(!drag) return; drag=false; card.classList.remove('dragging'); card.style.transition = ''; const endX = e.clientX || (e.changedTouches && e.changedTouches[0].clientX) || 0; const delta = endX - startX; if (startedOnImage && Math.abs(delta)>120){ const liked = delta>0; card.classList.remove('liking'); card.classList.remove('noping'); swipe(card, liked); } else { card.style.transform=''; card.classList.remove('liking'); card.classList.remove('noping'); } startedOnImage = false; }
+          const imgArea = card.querySelector('.card__image');
+          if (imgArea) imgArea.addEventListener('pointerdown', down);
           window.addEventListener('pointermove', move);
           window.addEventListener('pointerup', up);
         }
