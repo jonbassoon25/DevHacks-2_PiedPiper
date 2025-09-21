@@ -18,7 +18,7 @@ CSV_FILENAME = "../location_database.csv"
 TAGS_ARRAY_NPY = "location_tags.npy"
 TAGS_ARRAY_JSON = "location_tags.json"
 OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
-OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "gpt-oss:20b")
+OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "gemma2")
 
 
 def parse_args():
@@ -113,7 +113,8 @@ def call_ollama_for_tags(prompt: str, max_tags: int = 8) -> List[str]:
     # Parse into tags (expects comma-separated list)
     cleaned = re.sub(r"\s+", " ", text)
     parts = [p.strip() for p in cleaned.split(",") if p.strip()]
-    return [p.lower().replace(" ", "-") for p in parts][:max_tags]
+    final = [p.lower().replace(" ", "-") for p in parts][:max_tags]
+    return [t for t in final if t.count('-') <= 1]  # max one hyphen
 
 
 
