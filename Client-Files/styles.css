@@ -41,7 +41,7 @@ body{
 .viewport{padding:28px 32px;display:flex;justify-content:center}
 .stack{position:relative;width:100%;max-width:760px;height:600px;border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));display:flex;align-items:center;justify-content:center;overflow:hidden}
 .notice{color:var(--muted);padding:18px;text-align:center;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px}
-.card{display: flex; flex-direction: column;position:absolute;width:460px;max-width:92%;height:540px;border-radius:16px;background:var(--card-bg);box-shadow:0 30px 80px rgba(2,6,23,0.6);overflow:hidden;display:flex;flex-direction:column;transition:transform 240ms cubic-bezier(.22,.9,.1,1),opacity 200ms;top:50%;left:50%;}
+.card{display: flex; flex-direction: column;position:absolute;width:460px;max-width:92%;height:580px;border-radius:16px;background:var(--card-bg);box-shadow:0 30px 80px rgba(2,6,23,0.6);overflow:hidden;display:flex;flex-direction:column;transition:transform 240ms cubic-bezier(.22,.9,.1,1),opacity 200ms;top:50%;left:50%;}
 .card{will-change:transform,opacity;transform-origin:center;}
 .card{ /* stagger stack by index */
   --offset-y: calc(var(--i) * 8px);
@@ -84,7 +84,7 @@ body{
 }
 
 .card__info a.source {
-  font-size: 13px;
+  font-size: 0px;
   margin-top: auto;  /* stick the link to the bottom */
   color: #e6e6ff;
 }
