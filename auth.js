@@ -37,6 +37,7 @@ router.get('/auth/google/callback',
         res.send(`
             <script>
               const user = ${JSON.stringify({
+				id: req.user.id,
                 name: req.user.displayName,
                 email: req.user.emails?.[0]?.value || '',
                 photo: req.user.photos?.[0]?.value || ''
