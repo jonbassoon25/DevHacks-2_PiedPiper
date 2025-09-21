@@ -31,13 +31,11 @@ class recommendation_model(tf.keras.Model):
 		action = np.argmax(self(input_vector[np.newaxis, :]))
 		return action
 	
-	def update_qvals(self, last_action, reward, last_input_vector, next_input_vector):
+	def update_qvals(self, last_action, reward, last_input_vector):
 		with tf.GradientTape() as tape:
 			current_q_values = self(last_input_vector[np.newaxis, :])
-			next_q_values = self(next_input_vector[np.newaxis, :])
-			max_next_q = tf.reduce_max(next_q_values, axis=-1)
 			target_q_values = current_q_values.numpy()
-			target_q_values[0, last_action] = reward + self.discount_factor * max_next_q
+			target_q_values[0, last_action] = reward
 			loss = self.loss_fn(current_q_values, target_q_values)
 
 		gradients = tape.gradient(loss, self.trainable_variables)

@@ -48,7 +48,6 @@ io.on('connection', (socket) => {
 			let entryIndex = Object.keys(LocationDatabase)[Math.trunc(Math.random() * Object.keys(LocationDatabase).length)];
 			let randomEntry = LocationDatabase[entryIndex];
 			
-
 			// Check with the ML to decide if this entry will be kept
 			
 
@@ -71,7 +70,10 @@ io.on('connection', (socket) => {
 	socket.on("user_feedback", (data) => {
 		let liked = data["liked"] == true;
 		let entry = data["place"];
-		console.log(data);
+		
+		console.log(entry);
+		// Update the q-values of the network based on the response of the liked/disliked entry
+
 	});
 
 	// When a user has disconnected
