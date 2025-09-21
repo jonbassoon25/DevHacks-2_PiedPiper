@@ -30,8 +30,6 @@ if (fs.existsSync(__dirname + "/user_database.json")) {
 	UserDatabase = require(__dirname + "/user_database.json");
 }
 
-var userData = null;
-
 // ------------------
 // Session and Passport Setup  (ADD BELOW FILE LOADS)
 // ------------------
@@ -71,8 +69,8 @@ io.on('connection', (socket) => {
 
 	socket.on("user-info", (user) => {
 		console.log(user);
+		UserDatabase[user.id] = user;
 	});
-
 
 	socket.on("request_next_entries", (data) => {
 		let count = 10
