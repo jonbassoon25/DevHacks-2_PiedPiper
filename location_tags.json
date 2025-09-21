@@ -1,10 +1,10 @@
 [
   [
-    "mall",
     "shopping",
     "dining",
     "entertainment",
-    "retail"
+    "outdoor",
+    "marketplace"
   ],
   [
     "shopping",
@@ -15,49 +15,48 @@
   ],
   [
     "aquarium",
+    "ocean",
     "marine",
-    "sea",
-    "wildlife",
-    "exhibits"
+    "exhibit",
+    "creatures"
   ],
   [
     "mall",
-    "outlet",
     "shopping",
-    "indoor",
-    "entertainment"
+    "entertainment",
+    "outlets",
+    "arizona"
   ],
   [
-    "waterfront",
+    "lake",
     "recreation",
     "events",
-    "az",
-    "cycling"
+    "arizona",
+    "outdoors"
   ],
   [
+    "family",
     "lego",
     "indoor",
-    "play",
-    "cinema",
-    "kids"
+    "play"
   ],
   [
-    "museum",
     "history",
-    "tempe",
-    "education",
+    "local",
+    "museum",
     "culture"
   ],
   [
-    "stadium",
     "football",
+    "stadium",
     "sports",
-    "arena",
-    "college"
+    "arizona",
+    "az"
   ],
   [
-    "museum",
     "history",
+    "arizona",
+    "museum",
     "phoenix",
     "heritage"
   ],
@@ -70,1557 +69,2569 @@
   ],
   [
     "desert",
-    "arboretum",
-    "flora",
-    "garden",
-    "education"
+    "park",
+    "botanical",
+    "nature",
+    "flora"
   ],
   [
-    "tourism",
     "baseball",
-    "accommodations",
-    "information",
-    "training"
+    "travel",
+    "arizona",
+    "tempe"
   ],
   [
-    "museum",
     "selfie",
-    "interactive",
     "photo",
-    "fun"
+    "museum",
+    "instagram"
   ],
   [
-    "rage",
+    "break",
     "smash",
-    "release",
     "stress",
-    "entertainment"
+    "fun",
+    "release"
   ],
   [
     "brewery",
     "beer",
-    "craft",
+    "arizona",
+    "tempe",
+    "local"
+  ],
+  [
+    "escape",
+    "games",
+    "entertainment",
     "tempe",
     "arizona"
   ],
   [
     "escape",
-    "game",
-    "rooms",
-    "tempe",
-    "arizona"
-  ],
-  [
-    "escape",
-    "adventure",
-    "team",
     "axe",
-    "fun"
+    "throwing",
+    "games",
+    "immersive"
   ],
   [
     "escape",
+    "games",
     "puzzle",
-    "adventure",
     "teamwork",
-    "entertainment"
+    "challenge"
   ],
   [
-    "faith",
     "church",
-    "worship",
     "community",
-    "gospel"
+    "faith",
+    "kindness",
+    "welcome"
   ],
   [
-    "desert",
     "garden",
-    "flora",
-    "scenic",
-    "visit"
+    "desert",
+    "nature",
+    "vibrant"
   ],
   [
-    "museum",
     "music",
     "instruments",
-    "global",
-    "acoustics"
+    "museum",
+    "theater"
   ],
   [
-    "hike",
-    "rock",
-    "view",
-    "sunset",
-    "park"
+    "hiking",
+    "arizona",
+    "park",
+    "views",
+    "rock"
   ],
   [
-    "stadium",
     "baseball",
+    "arizona",
+    "stadium",
     "sports",
-    "arena",
-    "outdoor"
+    "dbacks"
   ],
   [
     "church",
-    "catholic",
     "historic",
+    "catholic",
     "phoenix",
     "basilica"
   ],
   [
     "zoo",
     "wildlife",
-    "conservation",
-    "education",
-    "adventure"
+    "arizona",
+    "outdoor",
+    "family"
   ],
   [
-    "park",
-    "hiking",
-    "biking",
     "trails",
-    "nature"
+    "nature",
+    "recreation",
+    "mountain",
+    "desert"
   ],
   [
     "museum",
     "art",
-    "culture",
     "education",
-    "arizona"
+    "arizona",
+    "southwest"
   ],
   [
+    "mansion",
     "dining",
     "events",
-    "view",
-    "wine",
-    "cuisine"
+    "views",
+    "historic"
   ],
   [
-    "museum",
     "science",
-    "phoenix",
+    "education",
     "interactive",
-    "education"
-  ],
-  [
-    "firefighting",
     "museum",
-    "history",
-    "hero",
-    "commemoration"
-  ],
-  [
-    "victorian",
-    "museum",
-    "historic",
-    "phoenix",
-    "architecture"
-  ],
-  [
-    "antique",
-    "mall",
-    "phoenix",
-    "desert",
-    "vendors"
-  ],
-  [
-    "amusement",
-    "family",
-    "thrill",
-    "park",
-    "rides"
-  ],
-  [
-    "garden",
-    "phoenix",
-    "japanese",
-    "nonprofit",
-    "sistercities"
-  ],
-  [
-    "theatre",
-    "regional",
-    "arizona",
-    "performing",
-    "company"
-  ],
-  [
-    "castle",
-    "quaint",
-    "historic",
-    "handmade",
-    "oddity"
-  ],
-  [
-    "arena",
-    "sports",
-    "phoenix",
-    "nba"
-  ],
-  [
-    "nature",
-    "preserve",
-    "trails",
-    "hiking",
-    "outdoors"
-  ],
-  [
-    "history",
-    "archaeology",
-    "culture",
-    "desert",
     "phoenix"
   ],
   [
-    "farm",
-    "garden",
-    "agritourism",
+    "fire",
     "history",
-    "urbanescape"
+    "memorial",
+    "collection",
+    "rescue"
+  ],
+  [
+    "history",
+    "victorian",
+    "phoenix",
+    "home",
+    "museum"
+  ],
+  [
+    "antiques",
+    "collectibles",
+    "vintage",
+    "mall",
+    "phoenix"
+  ],
+  [
+    "amusement-park",
+    "coasters",
+    "family",
+    "thrill",
+    "arizona"
+  ],
+  [
+    "garden",
+    "japanese",
+    "zen",
+    "peaceful",
+    "phoenix"
+  ],
+  [
+    "theatre",
+    "arizona",
+    "performing",
+    "arts",
+    "entertainment"
+  ],
+  [
+    "castle",
+    "arizona",
+    "unique",
+    "historical",
+    "quirky"
+  ],
+  [
+    "basketball",
+    "arena",
+    "sports",
+    "phoenix"
+  ],
+  [
+    "hiking",
+    "nature",
+    "preserve",
+    "mountains",
+    "trails"
+  ],
+  [
+    "desert",
+    "ancient",
+    "history",
+    "culture",
+    "arizona"
+  ],
+  [
+    "farm",
+    "nature",
+    "organic",
+    "escape",
+    "historic"
   ],
   [
     "shopping",
     "luxury",
     "park",
-    "historic",
+    "ambiance",
     "outdoor"
   ],
   [
-    "library",
     "modern",
-    "architecture",
-    "steel",
-    "glass"
+    "architectural",
+    "urban",
+    "bright",
+    "public"
   ],
   [
-    "indoor",
     "racing",
     "entertainment",
     "family",
-    "electric"
+    "phoenix"
   ],
   [
-    "farmersmarket",
+    "farmers",
+    "market",
     "downtown",
-    "local",
-    "food",
-    "outdoor"
+    "music",
+    "food"
   ],
   [
     "shopping",
-    "outlet",
-    "mall",
     "retail",
-    "phoenix"
+    "anthem",
+    "arizona",
+    "outlet"
   ],
   [
     "wildlife",
     "rescue",
-    "conservation",
     "phoenix",
-    "nonprofit"
+    "education"
   ],
   [
     "golf",
-    "course",
+    "arizona",
     "desert",
-    "phoenix",
-    "challenge"
+    "challenging",
+    "resort"
   ],
   [
-    "religion",
+    "religious",
     "temple",
-    "church",
-    "faith",
-    "sanctuary"
+    "sacred",
+    "peaceful"
   ],
   [
     "amusement",
+    "island",
     "rides",
-    "thrills",
-    "adventure",
-    "entertainment"
+    "fun"
   ],
   [
     "historic",
     "shopping",
     "dining",
-    "museum",
-    "heritage"
+    "tourism"
   ],
   [
-    "historic",
-    "landmark",
     "castle",
     "desert",
-    "phoenix"
+    "historic",
+    "arizona",
+    "unique"
   ],
   [
-    "train",
+    "trains",
     "park",
-    "modelrail",
     "desert",
-    "rides"
+    "models",
+    "recreation"
   ],
   [
     "jewish",
-    "heritage",
-    "museum",
+    "history",
     "arizona",
-    "history"
+    "heritage",
+    "culture"
   ],
   [
     "golf",
-    "elite",
-    "premium",
-    "phoenix"
+    "luxury",
+    "arizona",
+    "phoenix",
+    "resort"
   ],
   [
     "culture",
+    "irish",
     "library",
-    "celtic",
-    "education",
-    "community"
+    "learning",
+    "heritage"
   ],
   [
     "adventure",
-    "military",
     "tactical",
-    "realistic",
-    "tour"
+    "military",
+    "arizona"
   ],
   [
     "urban",
     "downtown",
-    "mixed",
-    "transit",
-    "development"
+    "phoenix",
+    "arizona",
+    "mixed-use"
   ],
   [
     "golf",
     "desert",
-    "upscale",
+    "luxury",
     "phoenix",
-    "club"
+    "arizona"
   ],
   [
-    "art",
     "museum",
-    "workshop",
+    "art",
+    "crafts",
     "community",
     "phoenix"
   ],
   [
     "golf",
     "resort",
-    "public",
     "mountain",
-    "course"
+    "arizona",
+    "scenic"
   ],
   [
     "urban",
-    "modern",
     "stylish",
-    "accessible",
-    "chic"
+    "shopping",
+    "dining",
+    "nightlife"
   ],
   [
     "theatre",
     "youth",
-    "drama",
-    "education"
+    "education",
+    "performance",
+    "community"
   ],
   [
     "church",
     "shrine",
+    "catholic",
     "maronite",
-    "phoenix",
-    "saint"
+    "phoenix"
   ],
   [
-    "motorcycle",
+    "motorcycles",
     "museum",
-    "heritage",
     "classic",
-    "southwestern"
+    "harley",
+    "southwest"
   ],
   [
+    "concert",
     "music",
     "venue",
-    "downtown",
-    "events",
-    "entertainment"
+    "phoenix",
+    "downtown"
   ],
   [
-    "outlet",
+    "outlets",
     "shopping",
-    "fashion",
-    "discounts",
-    "family"
+    "phoenix",
+    "deals",
+    "fashion"
   ],
   [
     "nature",
     "education",
+    "park",
     "trails",
-    "wildlife",
-    "park"
+    "wildlife"
   ],
   [
     "western",
-    "haunted",
-    "amusement",
     "family",
+    "fun",
+    "entertainment",
     "historic"
   ],
   [
     "museum",
+    "art",
+    "history",
     "culture",
-    "community",
-    "exhibits",
-    "education"
+    "exhibits"
   ],
   [
-    "adventure",
-    "nature",
     "indoor",
+    "tropical",
+    "adventure",
+    "fantasy",
     "play"
   ],
   [
     "golf",
     "desert",
-    "oasis",
-    "arizona"
+    "arizona",
+    "chandler",
+    "oasis"
   ],
   [
-    "heritage",
     "culture",
+    "heritage",
+    "history",
     "indigenous",
-    "community",
-    "museum"
+    "arizona"
   ],
   [
     "golf",
     "course",
     "renovated",
-    "irrigation",
+    "texas",
     "premium"
   ],
   [
     "golf",
-    "southwest",
-    "heritage",
-    "indigenous",
-    "unique"
+    "desert",
+    "arizona",
+    "culture",
+    "heritage"
   ],
   [
-    "spa",
-    "oasis",
     "desert",
+    "relaxation",
+    "wellness",
     "luxury",
-    "wellness"
+    "spa"
   ],
   [
-    "fall",
-    "pumpkin",
-    "harvest",
-    "desert",
-    "family"
-  ],
-  [
-    "amusement",
-    "interactive",
-    "competition",
+    "autumn",
+    "pumpkins",
+    "festive",
     "family",
-    "fun"
+    "arizona"
+  ],
+  [
+    "gameshow",
+    "interactive",
+    "entertainment",
+    "competition",
+    "phoenix"
   ],
   [
     "vintage",
     "market",
     "decor",
     "home",
-    "antiques"
+    "design"
   ],
   [
     "golf",
-    "club",
     "country",
-    "course",
-    "turf"
+    "club",
+    "bentgrass",
+    "foster"
   ],
   [
-    "antique",
-    "vintage",
+    "antiques",
     "mall",
-    "shopping",
-    "history"
+    "vintage",
+    "decor",
+    "eclectic"
   ],
   [
-    "trampoline",
+    "trampolines",
     "adventure",
-    "kids",
-    "parties",
-    "corporate"
+    "fun",
+    "entertainment",
+    "active"
   ],
   [
     "rock",
-    "formation",
     "trail",
-    "red",
-    "natural"
+    "arizona",
+    "climb",
+    "desert"
   ],
   [
+    "trail",
     "hiking",
-    "desert",
-    "arch",
-    "sandstone",
-    "scenic"
+    "arizona",
+    "scenery",
+    "arches"
   ],
   [
     "chapel",
-    "rock",
+    "desert",
+    "scenic",
     "sunset",
-    "view",
-    "spiritual"
+    "views"
   ],
   [
-    "park",
+    "arizona",
     "canyon",
-    "water",
-    "wildlife",
-    "apple"
+    "recreation",
+    "nature",
+    "scenic"
   ],
   [
     "hiking",
     "creek",
-    "canyon"
+    "canyon",
+    "nature",
+    "arizona"
   ],
   [
-    "art",
+    "arts",
     "shopping",
+    "village",
     "dining",
-    "gallery",
-    "market"
+    "mexican"
   ],
   [
-    "buddhism",
-    "meditation",
+    "buddhist",
     "spiritual",
+    "peaceful",
     "park",
-    "peace"
+    "arizona"
   ],
   [
     "hiking",
     "canyon",
+    "arizona",
     "ruins",
-    "scenic",
-    "historic"
+    "nature"
   ],
   [
-    "park",
-    "nature",
+    "desert",
     "trails",
-    "scenery",
-    "education"
+    "scenic",
+    "nature",
+    "arizona"
   ],
   [
-    "oldwest",
-    "art",
-    "food",
-    "spiritual",
-    "shopping"
+    "artsy",
+    "historic",
+    "quirky",
+    "western"
   ],
   [
-    "overlook",
     "view",
+    "nature",
     "shopping",
-    "arts",
-    "culture"
+    "crafts",
+    "native"
   ],
   [
-    "scenic",
     "picnic",
+    "desert",
     "rock",
-    "southwest",
-    "outdoor"
+    "shelter",
+    "scenic"
   ],
   [
-    "scenic",
     "trail",
-    "easy",
-    "views",
-    "buttes"
+    "scenic",
+    "buttes",
+    "hiking",
+    "views"
   ],
   [
     "history",
     "museum",
     "heritage",
     "sedona",
-    "landmark"
+    "park"
   ],
   [
     "hiking",
+    "sedona",
     "trail",
     "nature",
-    "outdoors",
-    "sedona"
+    "arizona"
   ],
   [
     "art",
-    "jewelry",
-    "contemporary",
     "gallery",
-    "boutique"
+    "contemporary",
+    "jewelry",
+    "diverse"
   ],
   [
     "art",
     "gallery",
     "shop",
     "local",
-    "exhibit"
+    "sedona"
   ],
   [
     "golf",
     "luxury",
-    "forest",
-    "retreat",
+    "nature",
+    "arizona",
     "sedona"
   ],
   [
-    "shopping",
+    "sedona",
+    "artsy",
+    "shops",
     "dining",
-    "art",
-    "retail",
-    "culture"
+    "local"
   ],
   [
     "tourism",
-    "information",
     "attractions",
-    "commerce",
-    "guide"
+    "travel",
+    "sedona"
   ],
   [
     "spa",
     "wellness",
-    "healing",
-    "reiki",
-    "sedona"
+    "sedona",
+    "relaxation"
   ],
   [
     "trail",
-    "hiking",
-    "biking",
-    "moderate",
-    "scenic"
+    "hike",
+    "bike",
+    "nature",
+    "creek"
   ],
   [
     "jewelry",
-    "family",
+    "arizona",
     "sedona",
     "handmade",
     "boutique"
   ],
   [
     "spa",
+    "luxury",
     "relaxation",
     "wellness",
-    "luxury",
-    "aromatherapy"
+    "sedona"
   ],
   [
     "yoga",
     "hiking",
     "nature",
-    "sedona",
-    "redrock"
-  ],
-  [
-    "spa",
-    "dayspa",
-    "wellness",
-    "relaxation",
+    "meditation",
     "sedona"
   ],
   [
-    "photography",
-    "wildlife",
-    "landscape",
-    "nature",
-    "art"
-  ],
-  [
-    "spirituality",
-    "meditation",
-    "vortex",
-    "community",
+    "spa",
+    "relaxation",
+    "sedona",
+    "massage",
     "wellness"
   ],
   [
+    "art",
+    "photography",
+    "nature",
+    "travel",
+    "galleries"
+  ],
+  [
+    "spiritual",
+    "newage",
+    "sedona",
+    "consciousness",
+    "vortex"
+  ],
+  [
     "brewery",
-    "family",
     "sedona",
     "craft",
-    "beer"
+    "family",
+    "arizona"
   ],
   [
-    "red",
-    "rock",
-    "trail",
-    "geology"
+    "geology",
+    "trails",
+    "desert",
+    "redrock",
+    "landscape"
   ],
   [
-    "market",
     "farmers",
+    "market",
     "music",
-    "community",
-    "local"
+    "local",
+    "produce"
   ],
   [
     "art",
     "gallery",
-    "spiritual",
-    "artists",
-    "tlaquepaque"
+    "village",
+    "scenic",
+    "fine"
   ],
   [
     "hiking",
+    "arizona",
     "canyon",
-    "redrock",
-    "trail",
-    "cave"
+    "redrock"
   ],
   [
     "glass",
     "art",
-    "gallery",
     "studio",
-    "immersive"
+    "sedona"
   ],
   [
     "spa",
-    "massage",
-    "facial",
-    "sedona",
-    "natural"
-  ],
-  [
-    "massage",
-    "spa",
-    "therapy",
+    "relaxation",
     "wellness",
-    "relaxation"
+    "massage",
+    "skincare"
+  ],
+  [
+    "massage",
+    "spa",
+    "relaxation",
+    "wellness",
+    "therapy"
   ],
   [
     "yoga",
     "hiking",
     "retreat",
     "sedona",
-    "wellness"
+    "nature"
   ],
   [
-    "stadium",
     "baseball",
-    "springtraining",
-    "minorleague"
+    "spring",
+    "arizona",
+    "stadium",
+    "sports"
   ],
   [
     "antiques",
-    "nostalgia",
     "vintage",
+    "nostalgia",
+    "shopping",
     "phoenix"
   ],
   [
     "golf",
-    "course",
-    "club",
-    "estrella"
+    "luxury",
+    "arizona",
+    "desert",
+    "club"
   ],
   [
     "golf",
-    "club",
     "course",
-    "practice",
-    "championship"
+    "championship",
+    "hills",
+    "practice"
   ],
   [
     "golf",
-    "public",
     "park",
-    "maricopa",
-    "estrella"
+    "arizona",
+    "recreation",
+    "public"
   ],
   [
+    "trampolines",
+    "fun",
+    "active",
     "indoor",
-    "trampoline",
-    "sports",
-    "family",
-    "fun"
+    "family"
   ],
   [
-    "natural",
     "bridge",
     "arizona",
-    "park",
-    "travertine"
+    "nature",
+    "state-park",
+    "hiking"
   ],
   [
-    "scenic",
-    "hiking",
-    "mountains",
+    "rim",
     "arizona",
-    "outdoors"
+    "landscape",
+    "hiking",
+    "natural"
   ],
   [
-    "museum",
     "history",
     "nature",
-    "culture",
-    "park"
+    "museum",
+    "arizona",
+    "payson"
   ],
   [
     "visitor",
+    "chamber",
     "tourism",
-    "commerce",
-    "community",
-    "region"
+    "payson",
+    "arizona"
   ],
   [
     "forest",
-    "rivers",
     "picnic",
     "shade",
-    "trail"
+    "recreation",
+    "escape"
   ],
   [
-    "horse",
-    "riding",
+    "horses",
     "trails",
-    "adventure",
-    "forest"
+    "forest",
+    "ranch",
+    "lessons"
   ],
   [
     "fudge",
-    "coffee",
     "gifts",
+    "coffee",
     "local",
-    "shop"
+    "arizona"
   ],
   [
-    "outdoors",
     "water",
     "rentals",
+    "recreation",
+    "arizona",
     "lake"
   ],
   [
     "jeep",
-    "offroad",
-    "adventure",
+    "arizona",
     "nature",
-    "arizona"
+    "offroad",
+    "adventure"
   ],
   [
-    "museum",
     "desert",
-    "nature",
-    "wildlife",
-    "arizona"
+    "museum",
+    "animals",
+    "plants",
+    "art"
   ],
   [
     "canyon",
-    "recreation",
     "hiking",
-    "forest",
-    "mountain"
+    "outdoors",
+    "arizona",
+    "forest"
   ],
   [
-    "aviation",
     "museum",
-    "planes",
+    "aviation",
+    "history",
     "collection",
-    "hangars"
+    "airplanes"
   ],
   [
-    "mission",
-    "adobe",
+    "church",
+    "spanish",
     "colonial",
-    "frescoes",
+    "arizona",
     "historic"
   ],
   [
     "desert",
+    "garden",
+    "arizona",
     "nature",
-    "scenery",
-    "travel"
+    "culture"
   ],
   [
     "desert",
     "mountains",
-    "wildlife",
-    "saguaros",
-    "canyons"
-  ],
-  [
-    "museum",
-    "miniatures",
-    "art",
-    "collection"
-  ],
-  [
-    "museum",
-    "art",
-    "historic",
-    "architecture",
-    "southwestern"
-  ],
-  [
-    "zoo",
-    "wildlife",
-    "tucson",
-    "outdoors",
-    "gem"
-  ],
-  [
-    "scenic",
-    "drive",
-    "desert",
-    "cactus",
-    "trail"
-  ],
-  [
-    "gallery",
-    "antiques",
-    "nativeamerican",
-    "art",
-    "collectibles"
-  ],
-  [
-    "oldwest",
-    "history",
-    "entertainment",
-    "tourism",
-    "tucson"
-  ],
-  [
-    "desert",
-    "park",
-    "outdoor",
     "nature",
-    "reserve"
-  ],
-  [
-    "university",
-    "research",
-    "desert",
-    "athletics",
-    "innovation"
-  ],
-  [
-    "park",
-    "visitorcenter",
-    "desert",
     "arizona"
   ],
   [
     "museum",
-    "auto",
-    "historic",
-    "collection"
-  ],
-  [
-    "visitorcenter",
-    "mountain",
-    "saguaro",
-    "desert",
-    "park"
+    "miniatures",
+    "tiny",
+    "collectibles",
+    "art"
   ],
   [
     "art",
+    "gallery",
     "museum",
+    "desert",
+    "arizona"
+  ],
+  [
+    "zoo",
     "tucson",
+    "park",
+    "nature",
+    "animals"
+  ],
+  [
+    "desert",
+    "scenic",
+    "cacti",
+    "arizona",
+    "drive"
+  ],
+  [
+    "native-american",
+    "art",
+    "antique",
+    "jewelry",
+    "southwest"
+  ],
+  [
+    "western",
     "historic",
+    "tucson",
+    "arizona",
+    "frontier"
+  ],
+  [
+    "desert",
+    "park",
+    "hiking",
+    "nature",
+    "trails"
+  ],
+  [
+    "research",
+    "university",
+    "arizona",
+    "exploration",
     "education"
   ],
   [
-    "glass",
+    "desert",
+    "hiking",
+    "nature",
+    "arizona"
+  ],
+  [
+    "automobiles",
+    "antique",
+    "museum",
+    "history",
+    "collection"
+  ],
+  [
+    "desert",
+    "mountains",
+    "nature",
+    "visitor-center"
+  ],
+  [
     "art",
-    "gallery",
-    "arizona",
-    "contemporary"
+    "museum",
+    "history",
+    "tucson",
+    "arizona"
+  ],
+  [
+    "art",
+    "glass",
+    "contemporary",
+    "unique"
   ],
   [
     "museum",
-    "children",
-    "interactive",
     "education",
+    "kids",
+    "interactive",
     "play"
   ],
   [
-    "museum",
     "art",
     "desert",
-    "southwestern",
-    "culture"
+    "southwest",
+    "museum",
+    "native"
   ],
   [
     "historic",
     "shopping",
-    "avenue",
+    "street",
     "district",
-    "vintage"
+    "downtown"
   ],
   [
+    "hiking",
+    "tucson",
+    "nature",
     "trail",
-    "canyon",
-    "desert",
-    "outdoors",
-    "scenic"
+    "canyon"
   ],
   [
     "theater",
     "tucson",
     "arizona",
     "performingarts",
-    "company"
+    "arts"
+  ],
+  [
+    "museum",
+    "history",
+    "signs",
+    "arizona",
+    "vintage"
+  ],
+  [
+    "trains",
+    "museum",
+    "toys",
+    "indoor",
+    "family"
+  ],
+  [
+    "history",
+    "arizona",
+    "artifacts",
+    "museum",
+    "tucson"
+  ],
+  [
+    "science",
+    "planetarium",
+    "learning",
+    "discovery",
+    "university"
+  ],
+  [
+    "casino",
+    "entertainment",
+    "arizona",
+    "resort",
+    "dining"
+  ],
+  [
+    "museum",
+    "archaeology",
+    "anthropology",
+    "arizona",
+    "southwest"
+  ],
+  [
+    "military",
+    "history",
+    "wwii",
+    "aviation",
+    "memorial"
+  ],
+  [
+    "art",
+    "history",
+    "museum",
+    "tucson",
+    "collection"
+  ],
+  [
+    "desert",
+    "scenic",
+    "arizona",
+    "road",
+    "nature"
+  ],
+  [
+    "theatre",
+    "drama",
+    "live",
+    "performance",
+    "season"
+  ],
+  [
+    "astronomy",
+    "tours",
+    "tucson",
+    "stars",
+    "night"
+  ],
+  [
+    "brewery",
+    "tucson",
+    "historic",
+    "artsy",
+    "warehouse"
+  ],
+  [
+    "cars",
+    "museum",
+    "classic",
+    "arizona",
+    "collectibles"
+  ],
+  [
+    "garden",
+    "desert",
+    "heritage",
+    "education",
+    "native"
+  ],
+  [
+    "hiking",
+    "canyon",
+    "nature",
+    "desert",
+    "saguaro"
+  ],
+  [
+    "history",
+    "fort",
+    "museum",
+    "arizona",
+    "military"
   ],
   [
     "art",
     "museum",
-    "sign",
-    "archival",
-    "preservation"
-  ],
-  [
-    "toy",
-    "train",
-    "museum",
-    "kids",
-    "indoor"
-  ],
-  [
-    "history",
-    "museum",
-    "arizona",
-    "mining",
-    "transportation"
-  ],
-  [
-    "science",
-    "astronomy",
-    "planetarium",
-    "education",
-    "interactive"
+    "western",
+    "american",
+    "native"
   ],
   [
     "casino",
     "gaming",
     "entertainment",
-    "slots",
-    "bingo"
-  ],
-  [
-    "museum",
-    "anthropology",
-    "research",
-    "southwest",
-    "collections"
-  ],
-  [
-    "museum",
-    "wwii",
-    "veterans",
-    "airforce",
-    "remembrance"
-  ],
-  [
-    "museum",
-    "art",
-    "university",
-    "tucson",
-    "collection"
-  ],
-  [
-    "scenic",
-    "drive",
     "desert",
-    "arizona",
-    "saguaro"
-  ],
-  [
-    "theatre",
-    "drama",
-    "performance",
-    "arts"
-  ],
-  [
-    "observatory",
-    "astronomy",
-    "sky",
-    "tours",
-    "retractable"
-  ],
-  [
-    "brewery",
-    "historic",
-    "arts",
-    "downtown",
-    "tucson"
-  ],
-  [
-    "museum",
-    "cars",
-    "classic",
-    "tucson",
     "arizona"
   ],
   [
-    "museum",
-    "garden",
-    "desert",
-    "heritage",
-    "education"
-  ],
-  [
-    "hiking",
-    "trail",
-    "popular",
-    "desert",
-    "scenic"
-  ],
-  [
-    "museum",
-    "history",
-    "military",
-    "fort",
-    "heritage"
-  ],
-  [
-    "art",
-    "museum",
-    "west",
-    "native",
-    "culture"
-  ],
-  [
-    "casino",
-    "desert",
-    "gaming",
-    "slots",
-    "entertainment"
-  ],
-  [
+    "fun",
     "family",
     "indoor",
-    "laser",
-    "amusement",
-    "entertainment"
+    "games",
+    "amusement"
   ],
   [
     "photography",
-    "archive",
-    "research",
     "art",
-    "collection"
+    "archives",
+    "research",
+    "learning"
   ],
   [
-    "historic",
     "racing",
-    "horse",
+    "horses",
+    "historic",
     "park",
-    "track"
+    "tucson"
   ],
   [
-    "garden",
+    "gardens",
     "japanese",
-    "tucson",
-    "heritage",
-    "landscape"
+    "tranquil",
+    "cultural",
+    "arizona"
   ],
   [
     "brewery",
-    "microbrew",
-    "happyhour",
+    "beer",
     "arizona",
-    "taps"
+    "food",
+    "local"
   ],
   [
     "desert",
     "architecture",
-    "historic",
-    "adobe",
-    "wind"
+    "wright",
+    "arizona",
+    "studio"
   ],
   [
-    "shopping",
-    "historic",
+    "shops",
     "western",
-    "quaint",
-    "phoenix"
+    "charming",
+    "historic"
   ],
   [
     "park",
-    "railroad",
+    "train",
     "miniature",
     "carousel",
-    "colorado"
+    "historic"
   ],
   [
     "conservatory",
     "butterflies",
+    "arizona",
     "family",
-    "indoor",
-    "arizona"
+    "indoor"
   ],
   [
-    "museum",
-    "western",
     "art",
     "history",
-    "scottsdale"
+    "west",
+    "museum",
+    "culture"
   ],
   [
     "aquarium",
-    "marine",
     "family",
-    "scottsdale",
-    "ocean"
+    "education",
+    "ocean",
+    "arizona"
   ],
   [
-    "mall",
     "shopping",
-    "fashion",
+    "mall",
+    "luxury",
     "dining",
     "entertainment"
+  ],
+  [
+    "shopping",
+    "dining",
+    "entertainment",
+    "upscale",
+    "outdoor"
+  ],
+  [
+    "karting",
+    "racing",
+    "entertainment",
+    "fun",
+    "games"
+  ],
+  [
+    "casino",
+    "resort",
+    "entertainment",
+    "scottsdale",
+    "arizona"
+  ],
+  [
+    "animals",
+    "reptile",
+    "sanctuary",
+    "education",
+    "rescue"
+  ],
+  [
+    "indigenous",
+    "art",
+    "market",
+    "crafts",
+    "seasonal"
+  ],
+  [
+    "winery",
+    "tasting",
+    "patio",
+    "rhone",
+    "wine"
   ],
   [
     "luxury",
     "shopping",
     "dining",
-    "entertainment",
-    "outdoor"
-  ],
-  [
-    "karts",
-    "racing",
-    "arcade",
-    "events",
-    "entertainment"
-  ],
-  [
-    "casino",
-    "resort",
-    "gaming",
-    "scottsdale",
-    "entertainment"
-  ],
-  [
-    "animal",
-    "rescue",
-    "education",
-    "sanctuary",
-    "reptile"
-  ],
-  [
-    "market",
-    "art",
-    "indigenous",
-    "local",
-    "craft"
-  ],
-  [
-    "winery",
-    "tasting",
-    "vineyard",
-    "patio",
-    "rhone"
-  ],
-  [
-    "shopping",
-    "art",
-    "boutique",
-    "food",
-    "downtown"
+    "culture",
+    "art"
   ],
   [
     "art",
-    "exhibition",
     "festival",
-    "tent",
-    "studios"
+    "studio",
+    "showcase",
+    "community"
   ],
   [
     "entertainment",
     "aquarium",
-    "museum",
-    "amusement",
-    "scottsdale"
-  ],
-  [
-    "golf",
-    "desert",
-    "scottsdale",
-    "foothills"
-  ],
-  [
-    "golf",
-    "desert",
-    "scenic",
-    "stadium",
-    "upscale"
-  ],
-  [
-    "art",
-    "culture",
+    "illusions",
     "family",
-    "accessibility",
-    "community"
-  ],
-  [
-    "mission",
-    "church",
-    "historic",
-    "landmark",
-    "scottsdale"
-  ],
-  [
-    "museum",
-    "shop",
-    "geology",
-    "rocks",
-    "minerals"
-  ],
-  [
-    "museum",
-    "illusion",
-    "interactive",
-    "art",
-    "scottsdale"
-  ],
-  [
-    "museum",
-    "art",
-    "contemporary",
-    "education",
-    "innovation"
-  ],
-  [
-    "casino",
-    "slots",
-    "gaming",
-    "entertainment",
     "arizona"
   ],
   [
-    "cinema",
+    "desert",
+    "golf",
+    "arizona",
+    "scenic",
+    "luxury"
+  ],
+  [
+    "desert",
+    "golf",
+    "scenic",
+    "luxury",
+    "arizona"
+  ],
+  [
+    "art",
+    "interactive",
+    "family",
+    "contemporary",
+    "immersive"
+  ],
+  [
+    "church",
+    "historic",
+    "mission",
+    "scottsdale",
+    "landmark"
+  ],
+  [
+    "crystals",
+    "fossils",
+    "rocks",
+    "minerals",
+    "gems"
+  ],
+  [
+    "illusions",
+    "optical",
+    "fun",
+    "interactive"
+  ],
+  [
+    "art",
+    "museum",
+    "contemporary",
+    "arizona",
+    "creative"
+  ],
+  [
+    "casino",
+    "arizona",
+    "games",
+    "slots",
+    "entertainment"
+  ],
+  [
+    "movies",
     "dining",
-    "theater",
     "restaurant",
-    "movies"
+    "theater",
+    "entertainment"
   ],
   [
     "golf",
     "club",
     "lifestyle",
-    "open",
-    "experience"
+    "recreation",
+    "arizona"
   ],
   [
-    "riding",
-    "outdoor",
-    "teambuilding",
-    "events",
-    "adventure"
+    "horses",
+    "trails",
+    "forest",
+    "recreation",
+    "arizona"
   ],
   [
     "history",
     "museum",
-    "schoolhouse",
-    "scottsdale",
-    "exhibits"
+    "arizona",
+    "education",
+    "local"
   ],
   [
     "art",
-    "exhibition",
     "desert",
+    "exhibition",
     "scottsdale",
     "arizona"
   ],
   [
-    "skydiving",
     "indoor",
+    "skydiving",
     "thrill",
     "phoenix",
-    "adventure"
+    "experience"
   ],
   [
-    "golf",
     "desert",
+    "golf",
     "arizona",
     "course",
-    "play"
+    "resort"
   ],
   [
-    "antique",
+    "antiques",
     "vintage",
+    "collectibles",
     "mall",
-    "az",
-    "collectors"
+    "arizona"
   ],
   [
-    "sports",
     "golf",
     "entertainment",
-    "drinks",
-    "social"
+    "social",
+    "sports"
   ],
   [
     "golf",
-    "course",
-    "club",
-    "bunkers"
+    "bunkers",
+    "arizona",
+    "expansive",
+    "course"
   ],
   [
-    "wine",
     "winery",
-    "scottsdale",
     "arizona",
-    "tasting"
+    "wine",
+    "tasting",
+    "scottsdale"
   ],
   [
     "maze",
-    "mirrors",
     "illusion",
-    "challenge",
-    "adventure"
+    "reflection",
+    "interactive",
+    "fun"
   ],
   [
-    "ufo",
-    "alien",
-    "exhibition",
+    "space",
+    "exhibits",
     "mystery",
-    "familyfriendly"
+    "aliens",
+    "interactive"
   ],
   [
     "golf",
-    "links",
-    "course",
+    "arizona",
     "desert",
-    "community"
+    "links",
+    "challenging"
   ],
   [
+    "art",
     "gallery",
-    "fineart",
-    "modern",
-    "international"
+    "fine",
+    "modern"
   ],
   [
     "golf",
     "club",
-    "ranch",
     "courses",
-    "lakes"
+    "arizona",
+    "ranch"
   ],
   [
     "golf",
-    "championship",
-    "scottsdale",
     "arizona",
-    "desert"
+    "desert",
+    "luxury",
+    "scenic"
   ],
   [
     "golf",
     "mountain",
-    "foothills",
     "scenic",
-    "challenge"
+    "challenge",
+    "arizona"
   ],
   [
-    "escaperoom",
     "adventure",
+    "puzzle",
+    "escape",
+    "games",
+    "interactive"
+  ],
+  [
+    "wine",
+    "tasting",
+    "scottsdale",
+    "arid"
+  ],
+  [
+    "desert",
+    "ranch",
+    "horseback",
+    "arizona",
+    "peaceful"
+  ],
+  [
+    "art",
+    "native-american",
+    "pottery",
+    "gallery",
+    "contemporary"
+  ],
+  [
+    "desert",
+    "golf",
+    "luxury",
+    "scenic",
+    "mountains"
+  ],
+  [
+    "art",
+    "gallery",
+    "eclectic",
+    "fine",
+    "scottsdale"
+  ],
+  [
+    "indigenous",
+    "culture",
+    "history",
+    "arizona",
+    "art"
+  ],
+  [
+    "baseball",
+    "sports",
+    "complex",
+    "arizona",
+    "training"
+  ],
+  [
+    "honey",
+    "local",
+    "farm",
+    "arizona",
+    "events"
+  ],
+  [
+    "park",
+    "playground",
+    "summer",
+    "kids",
+    "active"
+  ],
+  [
+    "golf",
+    "arizona",
+    "championship",
+    "course",
+    "resort"
+  ],
+  [
+    "theatre",
+    "arizona",
+    "performing",
+    "arts",
+    "nonprofit"
+  ],
+  [
+    "petroglyphs",
+    "preserve",
+    "desert",
+    "arizona",
+    "closed"
+  ],
+  [
+    "museum",
+    "aviation",
+    "history",
+    "planes"
+  ],
+  [
+    "temple",
+    "visitors",
+    "arizona",
+    "exhibits",
+    "religious"
+  ],
+  [
+    "dinosaurs",
+    "nature",
+    "arizona",
+    "exhibits",
+    "history"
+  ],
+  [
+    "marketplace",
+    "shopping",
+    "southwest",
+    "unique",
+    "vendors"
+  ],
+  [
+    "arts",
+    "culture",
+    "performance",
+    "community",
+    "city"
+  ],
+  [
+    "kids",
+    "art",
     "interactive",
-    "group",
+    "learn",
+    "family"
+  ],
+  [
+    "roses",
+    "desert",
+    "garden",
+    "blooms",
+    "arizona"
+  ],
+  [
+    "farm",
+    "arizona",
+    "dairy",
+    "family",
+    "tour"
+  ],
+  [
+    "trampoline",
+    "indoor",
+    "kids",
+    "fun",
+    "playground"
+  ],
+  [
+    "history",
+    "arizona",
+    "museum",
+    "art",
+    "exhibits"
+  ],
+  [
+    "golf",
+    "arizona",
+    "desert",
+    "scenic",
+    "challenging"
+  ],
+  [
+    "golf",
+    "challenging",
+    "scenic",
+    "resort"
+  ],
+  [
+    "flea-market",
+    "western",
+    "outdoor",
+    "unique",
+    "entertainment"
+  ],
+  [
+    "beer",
+    "pub",
+    "scottish",
+    "mesa",
+    "southwest"
+  ],
+  [
+    "antiques",
+    "vintage",
+    "collectibles",
+    "decor",
+    "eclectic"
+  ],
+  [
+    "improv",
+    "comedy",
+    "live",
+    "entertainment",
+    "theatre"
+  ],
+  [
+    "golf",
+    "bermuda",
+    "course",
+    "arizona",
+    "ranch"
+  ],
+  [
+    "golf",
+    "desert",
+    "arizona",
+    "scenic",
+    "courses"
+  ],
+  [
+    "golf",
+    "championship",
+    "challenging",
+    "country-club"
+  ],
+  [
+    "comedy",
+    "improv",
+    "classes",
+    "phoenix"
+  ],
+  [
+    "golf",
+    "prestigious",
+    "arizona",
+    "public",
+    "tournament"
+  ],
+  [
+    "lake",
+    "ranch",
+    "arizona",
+    "nature",
+    "outdoors"
+  ],
+  [
+    "golf",
+    "executive",
+    "greens",
+    "arizona",
+    "dining"
+  ],
+  [
+    "axethrowing",
+    "games",
+    "bar",
+    "mesa",
+    "arizona"
+  ],
+  [
+    "citrus",
+    "farm",
+    "market",
+    "treats",
+    "seasonal"
+  ],
+  [
+    "theatre",
+    "family",
+    "gilbert",
+    "arizona",
+    "round"
+  ],
+  [
+    "temple",
+    "religious",
+    "arizona",
+    "sacred",
+    "peaceful"
+  ],
+  [
+    "history",
+    "museum",
+    "arts",
+    "culture",
+    "events"
+  ],
+  [
+    "library",
+    "regional",
+    "community",
+    "books",
+    "resources"
+  ],
+  [
+    "craft",
+    "brewery",
+    "beer",
+    "local",
+    "small"
+  ],
+  [
+    "golf",
+    "entertainment",
+    "social",
+    "sports",
     "fun"
   ],
   [
+    "golf",
+    "arizona",
+    "club",
+    "course",
+    "desert"
+  ],
+  [
+    "farm",
+    "garden",
+    "sustainable",
+    "community",
+    "food"
+  ],
+  [
+    "comedy",
+    "club",
+    "arizona",
+    "live",
+    "entertainment"
+  ],
+  [
+    "golf",
+    "course",
+    "arizona",
+    "phoenix",
+    "traditional"
+  ],
+  [
+    "slime",
+    "diy",
+    "fun",
+    "creative",
+    "kids"
+  ],
+  [
+    "escape",
+    "games",
+    "puzzle",
+    "teamwork",
+    "challenge"
+  ],
+  [
+    "trampolines",
+    "family",
+    "fun",
+    "active",
+    "indoor"
+  ],
+  [
+    "speakeasy",
+    "vintage",
+    "bar",
+    "elegant",
+    "cocktails"
+  ],
+  [
+    "escape",
+    "immersive",
+    "sensory",
+    "adventure",
+    "teamwork"
+  ],
+  [
+    "art",
+    "gallery",
+    "creative",
+    "community",
+    "space"
+  ],
+  [
+    "desert",
+    "architecture",
+    "wright",
+    "arizona",
+    "unique"
+  ],
+  [
+    "western",
+    "shops",
+    "charming",
+    "historic",
+    "arizona"
+  ],
+  [
+    "park",
+    "trains",
+    "carousel",
+    "history",
+    "family"
+  ],
+  [
+    "conservatory",
+    "butterflies",
+    "arizona",
+    "family",
+    "indoor"
+  ],
+  [
+    "museum",
+    "west",
+    "art",
+    "history",
+    "culture"
+  ],
+  [
+    "aquarium",
+    "family",
+    "education",
+    "ocean",
+    "entertainment"
+  ],
+  [
+    "shopping",
+    "dining",
+    "entertainment",
+    "luxury",
+    "arizona"
+  ],
+  [
+    "outdoor",
+    "shopping",
+    "dining",
+    "entertainment",
+    "luxury"
+  ],
+  [
+    "racing",
+    "entertainment",
+    "fun",
+    "activities",
+    "go-karts"
+  ],
+  [
+    "casino",
+    "resort",
+    "entertainment",
     "scottsdale",
-    "tastingroom",
+    "arizona"
+  ],
+  [
+    "animals",
+    "reptile",
+    "sanctuary",
+    "education",
+    "rescue"
+  ],
+  [
+    "art",
+    "native-american",
+    "market",
+    "crafts",
+    "handmade"
+  ],
+  [
     "winery",
+    "tasting",
+    "patio",
+    "rhone",
+    "wine"
+  ],
+  [
+    "shopping",
+    "culture",
+    "luxury",
+    "dining"
+  ],
+  [
+    "art",
+    "studio",
+    "exhibition",
+    "event",
+    "community"
+  ],
+  [
+    "attractions",
+    "entertainment",
+    "arizona",
+    "family",
+    "fun"
+  ],
+  [
+    "desert",
+    "golf",
+    "arizona",
+    "luxury",
+    "scenic"
+  ],
+  [
+    "desert",
+    "golf",
+    "luxury",
+    "mountains",
+    "arizona"
+  ],
+  [
+    "art",
+    "interactive",
+    "exhibits",
+    "family",
+    "arizona"
+  ],
+  [
+    "church",
+    "historical",
+    "mission",
+    "arizona",
+    "landmark"
+  ],
+  [
+    "minerals",
+    "crystals",
+    "fossils",
+    "gems",
+    "rocks"
+  ],
+  [
+    "museum",
+    "illusions",
+    "optical",
+    "interactive",
+    "fun"
+  ],
+  [
+    "art",
+    "museum",
+    "contemporary",
+    "arizona",
+    "creative"
+  ],
+  [
+    "casino",
+    "slots",
+    "games",
+    "arizona",
+    "entertainment"
+  ],
+  [
+    "movies",
+    "dining",
+    "theatre",
+    "entertainment",
+    "restaurant"
+  ],
+  [
+    "golf",
+    "club",
+    "community",
+    "luxury",
+    "resort"
+  ],
+  [
+    "horses",
+    "trails",
+    "outdoors",
+    "arizona"
+  ],
+  [
+    "history",
+    "museum",
+    "scottsdale",
+    "education",
+    "arizona"
+  ],
+  [
+    "art",
+    "desert",
+    "exhibition",
+    "arizona",
+    "festival"
+  ],
+  [
+    "indoor",
+    "skydiving",
+    "adventure",
+    "thrill",
+    "phoenix"
+  ],
+  [
+    "desert",
+    "golf",
+    "arizona",
+    "scenic",
+    "challenging"
+  ],
+  [
+    "antique",
+    "mall",
+    "collectibles",
+    "vintage",
+    "arizona"
+  ],
+  [
+    "golf",
+    "entertainment",
+    "social",
+    "active",
+    "fun"
+  ],
+  [
+    "golf",
+    "course",
+    "arizona",
+    "bunkers",
+    "miller"
+  ],
+  [
+    "winery",
+    "scottsdale",
     "wine",
+    "tasting",
+    "arizona"
+  ],
+  [
+    "maze",
+    "reflection",
+    "illusions",
+    "challenge",
+    "fun"
+  ],
+  [
+    "ufos",
+    "aliens",
+    "museum",
+    "exhibits",
+    "interactive"
+  ],
+  [
+    "golf",
+    "arizona",
+    "desert",
+    "links",
+    "diverse"
+  ],
+  [
+    "art",
+    "gallery",
+    "paintings",
+    "modern",
+    "originals"
+  ],
+  [
+    "golf",
+    "course",
+    "ranch",
+    "arizona",
+    "dunes"
+  ],
+  [
+    "golf",
+    "arizona",
+    "luxury",
+    "resort",
+    "championship"
+  ],
+  [
+    "golf",
+    "mountain",
+    "scenic",
+    "challenging",
+    "arizona"
+  ],
+  [
+    "adventure",
+    "escape",
+    "puzzle",
+    "games",
+    "interactive"
+  ],
+  [
+    "wine",
+    "tasting",
+    "arizona",
     "oldtown"
   ],
   [
     "ranch",
     "desert",
-    "horse",
-    "scenic",
-    "vacation"
+    "horseback",
+    "arizona"
   ],
   [
-    "gallery",
     "pottery",
-    "indigenous",
+    "native-american",
     "art",
-    "culture"
+    "gallery",
+    "contemporary"
   ],
   [
     "desert",
-    "golf",
-    "scenic",
     "luxury",
-    "mountain"
+    "golf",
+    "mountain",
+    "arizona"
+  ],
+  [
+    "art",
+    "gallery",
+    "eclectic",
+    "fine",
+    "scottsdale"
+  ],
+  [
+    "native",
+    "american",
+    "culture",
+    "history",
+    "arizona"
+  ],
+  [
+    "spa",
+    "luxury",
+    "relaxation",
+    "wellness",
+    "arizona"
+  ],
+  [
+    "spa",
+    "massage",
+    "facial",
+    "relaxation",
+    "wellness"
+  ],
+  [
+    "arcade",
+    "active",
+    "immersive",
+    "challenging",
+    "fun"
   ],
   [
     "art",
     "gallery",
     "scottsdale",
-    "exhibition",
-    "creativity"
-  ],
-  [
-    "museum",
-    "nativeamerican",
-    "reservation",
-    "history",
-    "salt"
-  ],
-  [
-    "baseball",
-    "springtraining",
-    "sports",
-    "facility",
-    "peoria"
-  ],
-  [
-    "honey",
-    "farm",
-    "arizona",
-    "local",
-    "sweet"
-  ],
-  [
-    "amusement",
-    "lakeside",
-    "water",
-    "fun",
-    "park"
+    "nonprofit",
+    "fine"
   ],
   [
     "golf",
-    "course",
-    "championship",
     "arizona",
-    "premier"
+    "desert",
+    "scenic",
+    "championship"
   ],
   [
-    "theatre",
-    "nonprofit",
-    "awardwinning",
-    "performingarts",
-    "stateoftheart"
+    "horses",
+    "desert",
+    "arizona",
+    "trails",
+    "adventure"
   ],
   [
-    "preserve",
-    "petroglyph",
-    "historic",
+    "golf",
+    "arizona",
     "nature",
-    "rock"
+    "challenging",
+    "signature"
+  ],
+  [
+    "spa",
+    "luxury",
+    "wellness",
+    "relaxation",
+    "desert"
+  ],
+  [
+    "golf",
+    "desert",
+    "luxurious",
+    "arizona",
+    "scenic"
+  ],
+  [
+    "spa",
+    "relaxation",
+    "wellness",
+    "arizona",
+    "scottdale"
+  ],
+  [
+    "golf",
+    "club",
+    "resort",
+    "arizona"
+  ],
+  [
+    "entertainment",
+    "bowling",
+    "arcade",
+    "lasertag",
+    "billiards"
+  ],
+  [
+    "prison",
+    "history",
+    "arizona",
+    "desert",
+    "park"
+  ],
+  [
+    "historical",
+    "mining",
+    "ghost",
+    "arizona",
+    "town"
+  ],
+  [
+    "historic",
+    "park",
+    "river",
+    "military",
+    "transport"
+  ],
+  [
+    "wildlife",
+    "desert",
+    "river",
+    "nature",
+    "recreation"
+  ],
+  [
+    "marketplace",
+    "swapmeet",
+    "arizona",
+    "outdoor",
+    "bargain"
+  ],
+  [
+    "waterpark",
+    "arizona",
+    "family",
+    "fun",
+    "slides"
+  ],
+  [
+    "park",
+    "nature",
+    "playground",
+    "wetlands",
+    "recreation"
+  ],
+  [
+    "historic",
+    "garden",
+    "museum",
+    "yuma"
+  ],
+  [
+    "lake",
+    "wildlife",
+    "hiking",
+    "fishing",
+    "nature"
+  ],
+  [
+    "tourism",
+    "arizona",
+    "yuma",
+    "travel",
+    "info"
+  ],
+  [
+    "beach",
+    "river",
+    "park",
+    "recreation",
+    "summer"
+  ],
+  [
+    "casino",
+    "bar",
+    "food",
+    "historic"
+  ],
+  [
+    "pool",
+    "waterpark",
+    "recreation",
+    "summer",
+    "family"
+  ],
+  [
+    "history",
+    "aviation",
+    "monument",
+    "arizona",
+    "statue"
+  ],
+  [
+    "aviation",
+    "history",
+    "yuma",
+    "record",
+    "hall"
+  ],
+  [
+    "sports",
+    "complex",
+    "yuma",
+    "arizona",
+    "amenities"
+  ],
+  [
+    "history",
+    "monument",
+    "pioneer",
+    "arizona",
+    "journey"
+  ],
+  [
+    "park",
+    "recreation",
+    "nature",
+    "fitness",
+    "community"
+  ],
+  [
+    "train",
+    "history",
+    "river",
+    "arizona",
+    "tourism"
+  ],
+  [
+    "golf",
+    "public",
+    "desert",
+    "affordable",
+    "accessible"
+  ],
+  [
+    "golf",
+    "challenging",
+    "water",
+    "elevated",
+    "desert"
+  ],
+  [
+    "golf",
+    "desert",
+    "resort",
+    "rv",
+    "arizona"
+  ],
+  [
+    "desert",
+    "golf",
+    "resort",
+    "sunny"
+  ],
+  [
+    "golf",
+    "park",
+    "green",
+    "executive",
+    "manicured"
+  ],
+  [
+    "racing",
+    "motorsport",
+    "arizona",
+    "southwest",
+    "stadium"
+  ],
+  [
+    "racing",
+    "experience",
+    "speed",
+    "thrills",
+    "driving"
+  ],
+  [
+    "brewery",
+    "craftbeer",
+    "taproom",
+    "drinks",
+    "northwest"
+  ],
+  [
+    "indoor",
+    "playground",
+    "toddler",
+    "baby",
+    "fun"
+  ],
+  [
+    "escapes",
+    "games",
+    "drinks",
+    "fun",
+    "immersive"
+  ],
+  [
+    "fun",
+    "games",
+    "food",
+    "family",
+    "entertainment"
+  ],
+  [
+    "historic",
+    "rebuilt",
+    "landmark",
+    "arizona",
+    "tourist"
+  ],
+  [
+    "lake",
+    "recreation",
+    "arizona",
+    "desert",
+    "reservoir"
+  ],
+  [
+    "lake",
+    "park",
+    "recreation",
+    "camping",
+    "boating"
+  ],
+  [
+    "camping",
+    "beach",
+    "boating",
+    "nature",
+    "recreation"
+  ],
+  [
+    "wildlife",
+    "desert",
+    "river",
+    "arizona",
+    "refuge"
+  ],
+  [
+    "antiques",
+    "collectibles",
+    "vintage",
+    "unique",
+    "shop"
+  ],
+  [
+    "tours",
+    "lake",
+    "sunset",
+    "arizona",
+    "nature"
+  ],
+  [
+    "golf",
+    "courses",
+    "london",
+    "challenge",
+    "elite"
+  ],
+  [
+    "golf",
+    "resort",
+    "spa",
+    "dining",
+    "events"
+  ],
+  [
+    "lake",
+    "boat",
+    "tour",
+    "safari",
+    "arizona"
+  ],
+  [
+    "magic",
+    "illusion",
+    "live",
+    "performance",
+    "entertainment"
+  ],
+  [
+    "electric",
+    "rentals",
+    "bikes",
+    "havasu",
+    "delivery"
+  ],
+  [
+    "jewelry",
+    "art",
+    "gallery",
+    "turquoise",
+    "gemstones"
+  ],
+  [
+    "riverboat",
+    "cruise",
+    "lake",
+    "arizona",
+    "entertainment"
+  ],
+  [
+    "local",
+    "apparel",
+    "retail",
+    "boutique",
+    "community"
   ]
 ]
