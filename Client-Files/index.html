@@ -98,7 +98,7 @@
         } else {
 			// send the server the user info
 			socket.emit("user-info", u);
-			console.log(u);
+			var user_info = JSON.parse(u);
 		}
       } catch(e){ console.log(e) }
     </script>
@@ -343,7 +343,7 @@
           history.push(card);
           // emit feedback over socket
           try {
-            const payload = { action: liked ? 'like' : 'dislike', place: card.__place || null };
+            const payload = { id: user_info["id"], action: liked ? 'like' : 'dislike', place: card.__place || null };
             socket.emit('user_feedback', payload);
           } catch (e) { console.warn('feedback emit failed', e); }
           // persist liked places to localStorage
@@ -370,7 +370,7 @@
               c.style.zIndex = 1000 + (idx + 1);
             });
             updateStackVisibility();
-            if(!stack.querySelector('.card')) stack.innerHTML=`<div class="notice">You're all caught up.</div>`; 
+            if(!stack.querySelector('.card')) stack.innerHTML=`<div class="notice">Loading more...</div>`; 
           },350); 
         }
 
@@ -469,7 +469,7 @@
         // Emit the websocket request per your spec: event name _next_next_entries with an object containing key `count`.
         async function requestNext(count, location, activity) {
           return new Promise((resolve, reject) => {
-            socket.emit('request_next_entries', { count: count, location: location || '', activity: activity || '' });
+            socket.emit('request_next_entries', { count: count, id: user_info["id"], location: location || '', activity: activity || '' });
             // listen for several possible response event names (server may use different one)
             const handlers = {};
             const names = ['next_entries', '_next_next_entries_result', '_next_next_entries', 'response_next_entries', 'entries'];
@@ -490,7 +490,7 @@
                 names.forEach(n => socket.off(n, handlers[n]));
                 reject(new Error('Socket response timeout'));
               }
-            }, 5000);
+            }, 20000);
           });
         }
 
@@ -500,7 +500,7 @@
           const loc = locationInput.value.trim();
           const act = activityInput.value.trim();
           try {
-            const rows = await requestNext(12, loc, act);
+            const rows = await requestNext(6, loc, act);
             // server may send an object wrapper
             const data = Array.isArray(rows) ? rows : (rows && rows.results) ? rows.results : [];
             renderRows(data, false);
@@ -516,7 +516,7 @@
           const loc = locationInput.value.trim();
           const act = activityInput.value.trim();
           try {
-            const rows = await requestNext(12, loc, act);
+            const rows = await requestNext(3, loc, act);
             // server may send an object wrapper
             const data = Array.isArray(rows) ? rows : (rows && rows.results) ? rows.results : [];
             renderRows(data, false);
@@ -529,7 +529,7 @@
         // when remaining cards low, request more
         const observer = new MutationObserver(async ()=>{
           const remaining = stack.querySelectorAll('.card').length;
-          if (remaining <= 2) {
+          if (remaining <= 4) {
             const loc = locationInput.value.trim();
             const act = activityInput.value.trim();
             try {

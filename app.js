@@ -61,6 +61,25 @@ app.get('/', function(req, res){
 //------------------------------------------------------------------------------------//
 //Websocket Commands
 
+
+async function getMLResponse(args = [__dirname + "/Python_ML/DQN.py"]) {
+	//console.log(""+args)
+	const spawn = require("child_process").spawn;
+	const pythonProcess = spawn(__dirname + '/Python_ML/bin/python', args);
+	//console.log("Waiting");
+
+	return new Promise(function(resolve, reject) {
+		pythonProcess.stdout.on('data', (data) => {
+			let response = data.toString().trim();
+			if (response == "keep") {
+				resolve("keep");
+			} else {
+				resolve("next");
+			}
+		});
+	});
+}
+
 let connections;
 io.on('connection', (socket) => {
 	//Print current connections
@@ -68,16 +87,17 @@ io.on('connection', (socket) => {
 	console.log("\nConnected Users: " + connections.toString());
 
 	socket.on("user-info", (user) => {
-		console.log(user);
-		UserDatabase[user.id] = user;
+		//console.log(user);
+		
 	});
 
-	socket.on("request_next_entries", (data) => {
-		let count = 10
+	socket.on("request_next_entries", async (data) => {
+		let count = 6
 		if ("count" in Object.keys(data)) {
 			count = data["count"];
 		}
-		console.log(data);
+		let id = data["id"];
+		//console.log(data);
 		let payload = []
 		while (payload.length < count) {
 			// Randomly select a entry (TODO: stop from recommending previous recommendations)
@@ -85,31 +105,44 @@ io.on('connection', (socket) => {
 			let randomEntry = LocationDatabase[entryIndex];
 			
 			// Check with the ML to decide if this entry will be kept
-			
-
-			// Format and add the entry, if applicable
-			randomEntry = {
-				"ID": randomEntry[0],
-				"Name": randomEntry[1],
-				"Rating": randomEntry[2],
-				"Reviews": randomEntry[3],
-				"URL": randomEntry[4],
-				"Description": randomEntry[5],
-				"Location": randomEntry[6]
+			console.log(__dirname + "/Python_ML/DQN.py" + " " + __dirname + "/user_models/" + id + ".pkl" + " " +  "-d" + " " +  "" + entryIndex);
+			const response = await getMLResponse([__dirname + "/Python_ML/DQN.py", __dirname + "/user_models/" + id + ".pkl", "-d", "" + entryIndex]);
+			console.log(response);
+			if (response == "keep") {
+				// Format and add the entry, if applicable
+				randomEntry = {
+					"ID": randomEntry[0],
+					"Name": randomEntry[1],
+					"Rating": randomEntry[2],
+					"Reviews": randomEntry[3],
+					"URL": randomEntry[4],
+					"Description": randomEntry[5],
+					"Location": randomEntry[6]
+				}
+				payload.push(randomEntry);
 			}
-			payload.push(randomEntry);
+			console.log(payload.length + '/' + count);
 		}
 		// return selected database entries as a list [ {database row}, {database row}, ... ]
 		socket.emit("next_entries", payload);
 	});
 
 	socket.on("user_feedback", (data) => {
-		let liked = data["liked"] == true;
+		let liked = data["action"] == 'like';
 		let entry = data["place"];
+		let id = data["id"];
 		
 		console.log(entry);
+		console.log(liked);
 		// Update the q-values of the network based on the response of the liked/disliked entry
-
+		let entryIndex = entry["ID"];
+		let reward;
+		if (liked) {
+			reward = 1;
+		} else {
+			reward = 0;
+		}
+		getMLResponse([__dirname + "/Python_ML/DQN.py", __dirname + "/user_models/" + id + ".pkl", "-u", "" + entryIndex, "like", "" + reward]);
 	});
 
 	socket.on("agent_submit", (data) => {
@@ -117,7 +150,6 @@ io.on('connection', (socket) => {
 		const pyProcess = spawn('python', [__dirname + '/fetcher.py', data["query"]]);
 		pyProcess.stdout.on('data', (data) => {
 			let response = data.toString();
-			console.log("Python Response: " + response);
 			socket.emit("agent_response", {"response": response});
 		});
 	});

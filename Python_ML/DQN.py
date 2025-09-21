@@ -3,14 +3,18 @@
 
 import numpy as np
 import tensorflow as tf
+import keras
 import sys, os, random
 import joblib
 
+INPUT_COUNT = 499
+
+@keras.saving.register_keras_serializable()
 class recommendation_model(tf.keras.Model):
-	def __init__(self, num_inputs, num_actions, 
+	def __init__(self, num_inputs = INPUT_COUNT, num_actions = 2, 
 			learning_rate = 0.001, exploration_prob = 1.0, 
-			exploration_decay = 0.995, min_exploration_prob = 0.05):
-		super(recommendation_model, self).__init__()
+			exploration_decay = 0.995, min_exploration_prob = 0.05, **kwargs):
+		super(recommendation_model, self).__init__(**kwargs)
 		self.dense1 = tf.keras.layers.Dense(num_inputs, activation='relu') # first hidden layer / input layer
 		self.dense2 = tf.keras.layers.Dense(24, activation='relu') # second hidden layer
 		self.output_layer = tf.keras.layers.Dense(num_actions, activation='linear') # output layer
@@ -28,10 +32,10 @@ class recommendation_model(tf.keras.Model):
 		return self.output_layer(x) #run second layer to output layer
 	
 	def make_decision(self, input_vector):
-		if (random.random() < self.exploration_prob):
+		if (random.random() > self.exploration_prob):
 			action = np.argmax(self(input_vector[np.newaxis, :]))
 		else:
-			action = round(random.random())
+			action = random.random() < 0.6
 		return action
 	
 	def update_qvals(self, last_action, reward, last_input_vector):
@@ -57,8 +61,12 @@ location_vectors = np.load("./Python_ML/location_vectors.npy")
 model = None
 if os.path.exists(model_path):
 	model = joblib.load(model_path)
+	try:
+		model = joblib.load(model_path)
+	except:
+		model = recommendation_model()
 else:
-	model = recommendation_model(location_vectors.shape[1], 2)
+	model = recommendation_model()
 
 # Get inputs or update q vals
 if (run_arg == '-d'):
@@ -78,3 +86,5 @@ elif (run_arg == '-u'):
 	model.update_qvals(last_decision, reward, input_vector)
 
 	joblib.dump(model, model_path)
+
+sys.stdout.flush()
