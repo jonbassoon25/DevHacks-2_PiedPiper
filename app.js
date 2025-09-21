@@ -42,7 +42,21 @@ io.on('connection', (socket) => {
 			count = data["count"];
 		}
 		console.log(data);
-		// TODO: return selected database entries as a list [ [database row], [database row], ... ]
+		let payload = []
+		while (payload.length < count) {
+			// Randomly select a entry (TODO: stop from recommending previous recommendations)
+			let entryIndex = Object.keys(LocationDatabase)[Math.trunc(Math.random() * Object.keys(LocationDatabase).length)];
+			let randomEntry = LocationDatabase[entryIndex];
+			
+
+			// Check with the ML to decide if this entry will be kept
+			
+
+			// Add the entry, if applicable
+			payload.push(randomEntry);
+		}
+		// return selected database entries as a list [ [database row], [database row], ... ]
+		socket.emit("next_entries", payload);
 	});
 
 	socket.on("user_feedback", (data) => {
