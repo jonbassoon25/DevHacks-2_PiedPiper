@@ -149,7 +149,7 @@ def main():
     used_ollama = False
     failed_count = 0
     for i, row in df.iterrows():
-        text = f"Generate 3 to 5 short, single-word tags (in lowercase, hyphenated if multi-word) that best describe the following place. Return them as a comma-separated list only. The tags should be short and general.\n\nName: {row.get('Name','')}\nDescription: {row.get('Description','')}"
+        text = f"Generate 3 to 5 short, single-word tags (in lowercase) that best describe the following place. Return them as a comma-separated list only. The tags should be short and general.\n\nName: {row.get('Name','')}\nDescription: {row.get('Description','')}"
 
         if ollama_ok:
             try:
