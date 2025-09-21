@@ -162,6 +162,8 @@
             if (!imgArea.contains(target)) return;
             startedOnImage = true;
             drag=true; startX = e.clientX || e.touches?.[0]?.clientX; startY = e.clientY || e.touches?.[0]?.clientY; lastX = startX; card.classList.add('dragging'); card.style.transition = 'none';
+            // capture the pointer so move/up events continue to be received even if pointer leaves the element
+            try { if (e.pointerId && card.setPointerCapture) card.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ }
           }
           function move(e){ if(!drag) return; const x = (e.clientX||e.touches?.[0]?.clientX)-startX; const y = (e.clientY||e.touches?.[0]?.clientY)-startY; lastX = x; const rot = Math.max(Math.min(x/12, 25), -25); const scale = 1 - Math.min(Math.abs(x)/1500, 0.06); card.style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg) scale(${scale})`; 
             // toggle badges
@@ -169,9 +171,9 @@
             else if (x < -30) { card.classList.add('noping'); card.classList.remove('liking'); }
             else { card.classList.remove('liking'); card.classList.remove('noping'); }
           }
-          function up(e){ if(!drag) return; drag=false; card.classList.remove('dragging'); card.style.transition = ''; const endX = e.clientX || (e.changedTouches && e.changedTouches[0].clientX) || 0; const delta = endX - startX; if (startedOnImage && Math.abs(delta)>120){ const liked = delta>0; card.classList.remove('liking'); card.classList.remove('noping'); swipe(card, liked); } else { card.style.transform=''; card.classList.remove('liking'); card.classList.remove('noping'); } startedOnImage = false; }
-          const imgArea = card.querySelector('.card__image');
-          if (imgArea) imgArea.addEventListener('pointerdown', down);
+          function up(e){ if(!drag) return; drag=false; card.classList.remove('dragging'); card.style.transition = ''; const endX = e.clientX || (e.changedTouches && e.changedTouches[0].clientX) || 0; const delta = endX - startX; try { if (e.pointerId && card.releasePointerCapture) card.releasePointerCapture(e.pointerId); } catch(err){}; if (startedOnImage && Math.abs(delta)>100){ const liked = delta>0; card.classList.remove('liking'); card.classList.remove('noping'); swipe(card, liked); } else { card.style.transform=''; card.classList.remove('liking'); card.classList.remove('noping'); } startedOnImage = false; }
+          // attach pointerdown to the card so events always fire; down() will verify target is inside image
+          card.addEventListener('pointerdown', down);
           window.addEventListener('pointermove', move);
           window.addEventListener('pointerup', up);
         }
@@ -215,8 +217,7 @@
           },350); 
         }
 
-        likeBtn.addEventListener('click', ()=>{ const top = stack.querySelector('.card'); if(top) swipe(top, true); });
-        nopeBtn.addEventListener('click', ()=>{ const top = stack.querySelector('.card'); if(top) swipe(top, false); });
+  // (button handlers wired below using getTopCard)
   rewindBtn.addEventListener('click', ()=>{ const last = history.pop(); if(last){ last.style.opacity='1'; last.style.transform=''; stack.appendChild(last); updateStackVisibility(); } });
 
         // Helper to find the visible/top card (checks display and computed z-index)
