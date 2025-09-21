@@ -285,6 +285,19 @@
         likeBtn.addEventListener('click', ()=>{ const top = getTopCard(); if(top) swipe(top, true); });
         nopeBtn.addEventListener('click', ()=>{ const top = getTopCard(); if(top) swipe(top, false); });
 
+        // keyboard controls: ArrowLeft = reject, ArrowRight = like
+        window.addEventListener('keydown', (e) => {
+          // ignore when user is typing in an input, textarea or contenteditable
+          const tag = document.activeElement && document.activeElement.tagName;
+          const isTyping = tag === 'INPUT' || tag === 'TEXTAREA' || document.activeElement.isContentEditable;
+          if (isTyping) return;
+          if (e.key === 'ArrowLeft') {
+            const top = getTopCard(); if (top) swipe(top, false);
+          } else if (e.key === 'ArrowRight') {
+            const top = getTopCard(); if (top) swipe(top, true);
+          }
+        });
+
         // show only the top card, hide other articles inside the stack
         function updateStackVisibility(){
           const cards = Array.from(stack.querySelectorAll('.card'));
