@@ -115,14 +115,13 @@
         <div>
         <form id="search" class="search">
           <input id="location" placeholder="Location" aria-label="location" />
-          <input id="activity" placeholder="Activity" aria-label="activity" />
           <button type="submit" class="btn primary">Go</button>
         </form></div>
       </header>
 
       <section id="viewport" class="viewport">
         <div id="stack" class="stack">
-          <div class="notice">Enter a location and activity, then press Go</div>
+          <div class="notice">Enter a location, then press Go</div>
         </div>
       </section>
 
@@ -200,7 +199,6 @@
         const tpl = document.getElementById('cardTpl');
         const searchForm = document.getElementById('search');
         const locationInput = document.getElementById('location');
-        const activityInput = document.getElementById('activity');
         const likeBtn = document.getElementById('like');
         const nopeBtn = document.getElementById('nope');
         const rewindBtn = document.getElementById('rewind');
@@ -215,7 +213,6 @@
           const img = card.querySelector('img');
           img.src = row['URL'] ? row['URL'] : 'https://source.unsplash.com/600x400/?' + encodeURIComponent((row['Name']||'place').split(' ')[0]);
           img.alt = row['Name'] || 'place';
-          card.querySelector('.activity').textContent = (row['Name']||'').split(' ')[0] || '';
           card.querySelector('.score').textContent = row['Rating'] || 'N/A';
           card.querySelector('.count').textContent = row['Reviews'] ? `(${row['Reviews']})` : '';
           card.querySelector('.name').textContent = row['Name'] || '';
@@ -498,9 +495,8 @@
           e.preventDefault();
           stack.innerHTML = `<div class="notice">Requesting results...</div>`;
           const loc = locationInput.value.trim();
-          const act = activityInput.value.trim();
           try {
-            const rows = await requestNext(6, loc, act);
+            const rows = await requestNext(6, loc, '');
             // server may send an object wrapper
             const data = Array.isArray(rows) ? rows : (rows && rows.results) ? rows.results : [];
             renderRows(data, false);
@@ -515,9 +511,8 @@
           const remaining = stack.querySelectorAll('.card').length;
           if (remaining <= 4) {
             const loc = locationInput.value.trim();
-            const act = activityInput.value.trim();
             try {
-              const rows = await requestNext(6, loc, act);
+              const rows = await requestNext(6, loc, '');
               const data = Array.isArray(rows) ? rows : (rows && rows.results) ? rows.results : [];
               renderRows(data, true);
             } catch (e) { console.warn('prefetch failed', e); }
