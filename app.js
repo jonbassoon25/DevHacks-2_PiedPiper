@@ -21,7 +21,7 @@ require('dotenv').config();
 const authRoutes = require('./auth');
 
 //------------------------------------------------------------------------------------//
-//File loads
+//File loads & Variables
 
 const LocationDatabase = require(__dirname + "/location_database.json"); // { row number: [...row] }
 var UserDatabase = {};
@@ -29,6 +29,8 @@ var UserDatabase = {};
 if (fs.existsSync(__dirname + "/user_database.json")) {
 	UserDatabase = require(__dirname + "/user_database.json");
 }
+
+var userData = null;
 
 // ------------------
 // Session and Passport Setup  (ADD BELOW FILE LOADS)
