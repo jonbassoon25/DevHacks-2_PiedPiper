@@ -19,3 +19,5 @@ for i in range(vectors.shape[0]):
 			vectors[i][j] = 0
 
 np.save("./Python_ML/location_tag_vectors.npy", vectors, True)
+
+print("\n".join(map(str, list(vectors))))
