@@ -150,33 +150,77 @@
           updateStackVisibility();
         }
 
+        // Shared drag state to avoid multiple global handlers and improve reliability
+        let activeDrag = null; // { card, startX, startY, pointerId }
+
         function addDrag(card) {
-          let startX=0,startY=0,drag=false;
-          let lastX = 0;
-          let startedOnImage = false;
-          function down(e){
-            // only start drag if pointerdown occurred on the image area
-            const imgArea = card.querySelector('.card__image');
-            if (!imgArea) return;
-            const target = e.target || e.srcElement;
-            if (!imgArea.contains(target)) return;
-            startedOnImage = true;
-            drag=true; startX = e.clientX || e.touches?.[0]?.clientX; startY = e.clientY || e.touches?.[0]?.clientY; lastX = startX; card.classList.add('dragging'); card.style.transition = 'none';
-            // capture the pointer so move/up events continue to be received even if pointer leaves the element
-            try { if (e.pointerId && card.setPointerCapture) card.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ }
-          }
-          function move(e){ if(!drag) return; const x = (e.clientX||e.touches?.[0]?.clientX)-startX; const y = (e.clientY||e.touches?.[0]?.clientY)-startY; lastX = x; const rot = Math.max(Math.min(x/12, 25), -25); const scale = 1 - Math.min(Math.abs(x)/1500, 0.06); card.style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg) scale(${scale})`; 
-            // toggle badges
-            if (x > 30) { card.classList.add('liking'); card.classList.remove('noping'); }
-            else if (x < -30) { card.classList.add('noping'); card.classList.remove('liking'); }
-            else { card.classList.remove('liking'); card.classList.remove('noping'); }
-          }
-          function up(e){ if(!drag) return; drag=false; card.classList.remove('dragging'); card.style.transition = ''; const endX = e.clientX || (e.changedTouches && e.changedTouches[0].clientX) || 0; const delta = endX - startX; try { if (e.pointerId && card.releasePointerCapture) card.releasePointerCapture(e.pointerId); } catch(err){}; if (startedOnImage && Math.abs(delta)>100){ const liked = delta>0; card.classList.remove('liking'); card.classList.remove('noping'); swipe(card, liked); } else { card.style.transform=''; card.classList.remove('liking'); card.classList.remove('noping'); } startedOnImage = false; }
-          // attach pointerdown to the card so events always fire; down() will verify target is inside image
-          card.addEventListener('pointerdown', down);
-          window.addEventListener('pointermove', move);
-          window.addEventListener('pointerup', up);
+          const imgArea = card.querySelector('.card__image');
+          if (!imgArea) return;
+          imgArea.addEventListener('pointerdown', (e) => {
+            // start drag only when pressing on image area
+            const startX = e.clientX || (e.touches && e.touches[0] && e.touches[0].clientX) || 0;
+            const startY = e.clientY || (e.touches && e.touches[0] && e.touches[0].clientY) || 0;
+            activeDrag = { card, startX, startY, pointerId: e.pointerId || null };
+            card.classList.add('dragging');
+            card.style.transition = 'none';
+            try { if (e.pointerId && card.setPointerCapture) card.setPointerCapture(e.pointerId); } catch (err) {}
+          });
         }
+
+        // global move/up handlers operate on the single activeDrag
+        window.addEventListener('pointermove', (e) => {
+          if (!activeDrag) return;
+          // ignore pointer events from other pointers
+          if (activeDrag.pointerId != null && e.pointerId !== activeDrag.pointerId) return;
+          const { card, startX, startY } = activeDrag;
+          const x = (e.clientX || 0) - startX;
+          const y = (e.clientY || 0) - startY;
+          const rot = Math.max(Math.min(x/12, 25), -25);
+          const scale = 1 - Math.min(Math.abs(x)/1500, 0.06);
+          card.style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg) scale(${scale})`;
+          if (x > 30) { card.classList.add('liking'); card.classList.remove('noping'); }
+          else if (x < -30) { card.classList.add('noping'); card.classList.remove('liking'); }
+          else { card.classList.remove('liking'); card.classList.remove('noping'); }
+        });
+
+        function cancelActiveDrag(e) {
+          if (!activeDrag) return;
+          // if a pointerId exists, ensure we only cancel for that pointer
+          if (activeDrag.pointerId != null && e && e.pointerId !== activeDrag.pointerId) return;
+          const { card } = activeDrag;
+          try { if (activeDrag.pointerId != null && card.releasePointerCapture) card.releasePointerCapture(activeDrag.pointerId); } catch (err) {}
+          card.classList.remove('dragging');
+          card.style.transition = '';
+          card.style.transform = '';
+          card.classList.remove('liking'); card.classList.remove('noping');
+          activeDrag = null;
+        }
+
+        window.addEventListener('pointerup', (e) => {
+          if (!activeDrag) return;
+          if (activeDrag.pointerId != null && e.pointerId !== activeDrag.pointerId) return;
+          const { card, startX } = activeDrag;
+          const endX = e.clientX || 0;
+          const delta = endX - startX;
+          // release pointer capture
+          try { if (activeDrag.pointerId != null && card.releasePointerCapture) card.releasePointerCapture(activeDrag.pointerId); } catch (err) {}
+          card.classList.remove('dragging');
+          card.style.transition = '';
+          const threshold = 100;
+          if (Math.abs(delta) > threshold) {
+            const liked = delta > 0;
+            card.classList.remove('liking'); card.classList.remove('noping');
+            swipe(card, liked);
+          } else {
+            card.style.transform = '';
+            card.classList.remove('liking'); card.classList.remove('noping');
+          }
+          activeDrag = null;
+        });
+
+        // cleanup handlers for cancelled pointers or lost capture
+        window.addEventListener('pointercancel', cancelActiveDrag);
+        window.addEventListener('lostpointercapture', cancelActiveDrag);
 
         function swipe(card, liked){ 
           card.style.transition='transform 300ms ease, opacity 300ms'; 
