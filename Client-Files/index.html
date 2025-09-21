@@ -8,15 +8,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   </head>
   <body>
+    <script>
+      // redirect to login if not authenticated (client-side simulated)
+      try {
+        const u = localStorage.getItem('az_user');
+        if (!u || u === 'null') {
+          if (!location.pathname.endsWith('/login.html')) location.replace('/login.html');
+        }
+      } catch(e){}
+    </script>
     <main class="app">
+      <!-- logged-in bar will be inserted here -->
       <header class="header">
+        <div id="userBlock" style="display:flex;align-items:center;gap:12px">
+          <!-- JS will populate user info and logout -->
+        </div>
         <div class="brand">
           <h1>AZ Places</h1>
           <p class="tagline">Find things to do in Arizona — swipe right to save</p>
         </div>
         <form id="search" class="search">
-          <input id="location" placeholder="Location (e.g. Chandler, Arizona)" aria-label="location" />
-          <input id="activity" placeholder="Activity (e.g. Hiking, Museum, Coffee)" aria-label="activity" />
+          <input id="location" placeholder="Location" aria-label="location" />
+          <input id="activity" placeholder="Activity" aria-label="activity" />
           <button type="submit" class="btn primary">Go</button>
         </form>
       </header>
@@ -35,6 +48,8 @@
 
       <template id="cardTpl">
         <article class="card">
+          <div class="badge-like">LIKE</div>
+          <div class="badge-nope">NOPE</div>
           <div class="card__image"><img src="" alt=""/></div>
           <div class="card__info">
             <div class="meta"><span class="activity">Activity</span><span class="rating">★ <b class="score">4.5</b> <span class="count">(0)</span></span></div>
@@ -48,6 +63,22 @@
 
       <script src="/socket.io/socket.io.js"></script>
       <script>
+        // populate user UI
+        (function(){
+          try{
+            const raw = localStorage.getItem('az_user');
+            const block = document.getElementById('userBlock');
+            if (raw && block){
+              const u = JSON.parse(raw);
+              const img = document.createElement('div');
+              img.style.width='36px';img.style.height='36px';img.style.borderRadius='999px';img.style.background='linear-gradient(90deg,var(--accent-1),var(--accent-2))';img.style.display='inline-flex';img.style.alignItems='center';img.style.justifyContent='center';img.style.color='#051124';img.style.fontWeight='700';img.textContent = (u.name||'U').split(' ').map(s=>s[0]).slice(0,2).join('');
+              const name = document.createElement('div');name.style.fontWeight='600';name.style.fontSize='14px';name.textContent = u.name || 'User';
+              const out = document.createElement('button');out.className='btn primary';out.style.padding='8px 10px';out.style.fontSize='13px';out.textContent='Logout';out.addEventListener('click', ()=>{ localStorage.removeItem('az_user'); location.replace('/login.html'); });
+              block.appendChild(img); block.appendChild(name); block.appendChild(out);
+            }
+          }catch(e){/* noop */}
+        })();
+
         const socket = io();
         const stack = document.getElementById('stack');
         const tpl = document.getElementById('cardTpl');
@@ -96,9 +127,15 @@
 
         function addDrag(card) {
           let startX=0,startY=0,drag=false;
-          function down(e){ drag=true; startX = e.clientX || e.touches?.[0]?.clientX; startY = e.clientY || e.touches?.[0]?.clientY; card.classList.add('dragging'); }
-          function move(e){ if(!drag) return; const x = (e.clientX||e.touches?.[0]?.clientX)-startX; const y = (e.clientY||e.touches?.[0]?.clientY)-startY; card.style.transform = `translate(${x}px, ${y}px) rotate(${x/20}deg)`; }
-          function up(e){ if(!drag) return; drag=false; card.classList.remove('dragging'); const endX = e.clientX || (e.changedTouches && e.changedTouches[0].clientX) || 0; const delta = endX - startX; if(Math.abs(delta)>120){ const liked = delta>0; swipe(card, liked); } else { card.style.transform=''; } }
+          let lastX = 0;
+          function down(e){ drag=true; startX = e.clientX || e.touches?.[0]?.clientX; startY = e.clientY || e.touches?.[0]?.clientY; lastX = startX; card.classList.add('dragging'); card.style.transition = 'none'; }
+          function move(e){ if(!drag) return; const x = (e.clientX||e.touches?.[0]?.clientX)-startX; const y = (e.clientY||e.touches?.[0]?.clientY)-startY; lastX = x; const rot = Math.max(Math.min(x/12, 25), -25); const scale = 1 - Math.min(Math.abs(x)/1500, 0.06); card.style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg) scale(${scale})`; 
+            // toggle badges
+            if (x > 30) { card.classList.add('liking'); card.classList.remove('noping'); }
+            else if (x < -30) { card.classList.add('noping'); card.classList.remove('liking'); }
+            else { card.classList.remove('liking'); card.classList.remove('noping'); }
+          }
+          function up(e){ if(!drag) return; drag=false; card.classList.remove('dragging'); card.style.transition = ''; const endX = e.clientX || (e.changedTouches && e.changedTouches[0].clientX) || 0; const delta = endX - startX; if(Math.abs(delta)>120){ const liked = delta>0; card.classList.remove('liking'); card.classList.remove('noping'); swipe(card, liked); } else { card.style.transform=''; card.classList.remove('liking'); card.classList.remove('noping'); } }
           card.addEventListener('pointerdown', down);
           window.addEventListener('pointermove', move);
           window.addEventListener('pointerup', up);
