@@ -8,14 +8,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   </head>
   <body>
+	<script src="/socket.io/socket.io.js"></script>
     <script>
+	  const socket = io();
       // redirect to login if not authenticated (client-side simulated)
       try {
         const u = localStorage.getItem('az_user');
         if (!u || u === 'null') {
           if (!location.pathname.endsWith('/login.html')) location.replace('/login.html');
-        }
-      } catch(e){}
+        } else {
+			// send the server the user info
+			socket.emit("user-info", u);
+			console.log(u);
+		}
+      } catch(e){ console.log(e) }
     </script>
     <main class="app">
       <!-- logged-in bar will be inserted here -->
@@ -64,7 +70,6 @@
         </article>
       </template>
 
-      <script src="/socket.io/socket.io.js"></script>
       <script>
         // populate user UI
         (function(){
@@ -82,7 +87,6 @@
           }catch(e){/* noop */}
         })();
 
-        const socket = io();
         const stack = document.getElementById('stack');
         const tpl = document.getElementById('cardTpl');
         const searchForm = document.getElementById('search');
