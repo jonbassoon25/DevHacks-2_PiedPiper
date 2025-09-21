@@ -13,6 +13,8 @@ const io = require('socket.io')(http);
 
 const path = require('path');
 
+const fs = require('fs');
+
 require('dotenv').config();
 
 // OAuth routes
@@ -22,6 +24,11 @@ const authRoutes = require('./auth');
 //File loads
 
 const LocationDatabase = require(__dirname + "/location_database.json"); // { row number: [...row] }
+var UserDatabase = {};
+
+if (fs.existsSync(__dirname + "/user_database.json")) {
+	UserDatabase = require(__dirname + "/user_database.json");
+}
 
 // ------------------
 // Session and Passport Setup  (ADD BELOW FILE LOADS)
@@ -59,6 +66,10 @@ io.on('connection', (socket) => {
 	//Print current connections
 	connections = io.engine.clientsCount;
 	console.log("\nConnected Users: " + connections.toString());
+
+	socket.on("user-info", (user) => {
+		console.log(user);
+	});
 
 
 	socket.on("request_next_entries", (data) => {
