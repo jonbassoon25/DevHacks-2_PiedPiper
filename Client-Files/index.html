@@ -35,6 +35,8 @@
 
       <template id="cardTpl">
         <article class="card">
+          <div class="badge-like">LIKE</div>
+          <div class="badge-nope">NOPE</div>
           <div class="card__image"><img src="" alt=""/></div>
           <div class="card__info">
             <div class="meta"><span class="activity">Activity</span><span class="rating">★ <b class="score">4.5</b> <span class="count">(0)</span></span></div>
@@ -96,9 +98,15 @@
 
         function addDrag(card) {
           let startX=0,startY=0,drag=false;
-          function down(e){ drag=true; startX = e.clientX || e.touches?.[0]?.clientX; startY = e.clientY || e.touches?.[0]?.clientY; card.classList.add('dragging'); }
-          function move(e){ if(!drag) return; const x = (e.clientX||e.touches?.[0]?.clientX)-startX; const y = (e.clientY||e.touches?.[0]?.clientY)-startY; card.style.transform = `translate(${x}px, ${y}px) rotate(${x/20}deg)`; }
-          function up(e){ if(!drag) return; drag=false; card.classList.remove('dragging'); const endX = e.clientX || (e.changedTouches && e.changedTouches[0].clientX) || 0; const delta = endX - startX; if(Math.abs(delta)>120){ const liked = delta>0; swipe(card, liked); } else { card.style.transform=''; } }
+          let lastX = 0;
+          function down(e){ drag=true; startX = e.clientX || e.touches?.[0]?.clientX; startY = e.clientY || e.touches?.[0]?.clientY; lastX = startX; card.classList.add('dragging'); card.style.transition = 'none'; }
+          function move(e){ if(!drag) return; const x = (e.clientX||e.touches?.[0]?.clientX)-startX; const y = (e.clientY||e.touches?.[0]?.clientY)-startY; lastX = x; const rot = Math.max(Math.min(x/12, 25), -25); const scale = 1 - Math.min(Math.abs(x)/1500, 0.06); card.style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg) scale(${scale})`; 
+            // toggle badges
+            if (x > 30) { card.classList.add('liking'); card.classList.remove('noping'); }
+            else if (x < -30) { card.classList.add('noping'); card.classList.remove('liking'); }
+            else { card.classList.remove('liking'); card.classList.remove('noping'); }
+          }
+          function up(e){ if(!drag) return; drag=false; card.classList.remove('dragging'); card.style.transition = ''; const endX = e.clientX || (e.changedTouches && e.changedTouches[0].clientX) || 0; const delta = endX - startX; if(Math.abs(delta)>120){ const liked = delta>0; card.classList.remove('liking'); card.classList.remove('noping'); swipe(card, liked); } else { card.style.transform=''; card.classList.remove('liking'); card.classList.remove('noping'); } }
           card.addEventListener('pointerdown', down);
           window.addEventListener('pointermove', move);
           window.addEventListener('pointerup', up);
