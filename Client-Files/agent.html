@@ -78,7 +78,7 @@
         <!-- Sidebar -->
         <aside class="w-64 bg-gray-950 p-4 hidden md:flex flex-col">
             <!-- Back Button -->
-            <a href="index.html" class="flex items-center gap-2 text-sm text-gray-300 hover:text-white mb-4">
+            <a href="agent.html" class="flex items-center gap-2 text-sm text-gray-300 hover:text-white mb-4">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                 </svg>
@@ -145,6 +145,12 @@
             const chatWindow = document.getElementById('chat-window');
             const socketStatus = document.getElementById('socket-status');
             const newChatBtn = document.getElementById('new-chat-btn');
+            const menuBtn = document.getElementById('menu-btn');
+            const sidebar = document.querySelector('aside');
+
+            menuBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('hidden');
+            });
 
             function startNewChat() {
                 chatWindow.innerHTML = '';

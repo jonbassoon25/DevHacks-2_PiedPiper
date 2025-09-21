@@ -16,9 +16,36 @@
       .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);padding:8px 10px;border-radius:8px}
     </style>
   </head>
+  <!-- Floating Chat Widget -->
+  <div id="chat-widget" class="chat-widget hidden">
+  <div class="chat-header">
+    <button id="chat-close" class="chat-close">✖</button>
+  </div>
+  <iframe src="/agent.html" frameborder="0"></iframe>
+  </div>
+
+  <button id="chat-toggle" class="chat-toggle">
+    💬
+  </button>
+  <script>
+    const chatWidget = document.getElementById("chat-widget");
+    const chatToggle = document.getElementById("chat-toggle");
+
+    chatToggle.addEventListener("click", () => {
+      chatWidget.classList.toggle("hidden");
+    });
+    const chatClose = document.getElementById("chat-close");
+
+    chatClose.addEventListener("click", () => {
+      chatWidget.classList.add("hidden");
+    });
+  </script>
   <body>
     <main class="app">
       <header class="header">
+        <div id="userBlock" class="user-block">
+          <!-- JS will populate user info + dropdown -->
+        </div>
         <div class="brand"><h1>Fynder</h1><p class="tagline">Saved places you liked</p></div>
         <div style="display:flex;gap:12px;align-items:center">
           <a href="/" class="btn primary" style="padding:8px 12px;font-size:14px">Back</a>
@@ -47,9 +74,8 @@
             const meta = document.createElement('div'); meta.className='saved-meta';
             meta.innerHTML = `<h3>${p.Name||'Untitled'}</h3><p class="location">${p.Location||''}</p><p class="desc">${p.Description||''}</p>`;
             const actions = document.createElement('div'); actions.className='saved-actions';
-            const open = document.createElement('a'); open.className='btn'; open.textContent='Open'; open.href = p.URL || '#'; open.target='_blank';
             const remove = document.createElement('button'); remove.className='btn ghost'; remove.textContent='Remove'; remove.addEventListener('click', ()=>{ removeSaved(idx); });
-            actions.appendChild(open); actions.appendChild(remove);
+            actions.appendChild(remove);
             el.appendChild(img); el.appendChild(meta); el.appendChild(actions);
             list.appendChild(el);
           });
@@ -67,10 +93,6 @@
       document.getElementById('clearAll').addEventListener('click', ()=>{ if(confirm('Clear all saved places?')){ localStorage.removeItem('fynder_saved'); loadSaved(); } });
       loadSaved();
     </script>
-    <!-- Chatbot button -->
-    <a href="agent.html" class="chat-btn" aria-label="Chatbot">
-      💬
-    </a>
 
     <style>
       .chat-btn {
@@ -96,6 +118,107 @@
         transform: scale(1.1);
         box-shadow: 0 12px 32px rgba(0,0,0,0.4);
       }
+      .user-block {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown-toggle {
+        background: none;
+        border: none;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        color: var(--text-color, #fff);
+      }
+
+      .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: #fff;
+        min-width: 120px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        border-radius: 6px;
+        overflow: hidden;
+        z-index: 1000;
+      }
+
+      .dropdown-menu a {
+        display: block;
+        padding: 8px 12px;
+        color: #051124;
+        text-decoration: none;
+        font-size: 14px;
+      }
+
+      .dropdown-menu a:hover {
+        background: var(--accent-1);
+        color: #fff;
+      }
+
+      .dropdown:hover .dropdown-menu {
+        display: block;
+      }
     </style>
+    <script>
+      (function(){
+        try{
+          const raw = localStorage.getItem('az_user');
+          const block = document.getElementById('userBlock');
+          if (raw && block){
+            const u = JSON.parse(raw);
+            const img = document.createElement('div');
+            img.style.width='36px';
+            img.style.height='36px';
+            img.style.borderRadius='999px';
+            img.style.background='linear-gradient(90deg,var(--accent-1),var(--accent-2))';
+            img.style.display='inline-flex';
+            img.style.alignItems='center';
+            img.style.justifyContent='center';
+            img.style.color='#051124';
+            img.style.fontWeight='700';
+            img.textContent = (u.name||'U').split(' ').map(s=>s[0]).slice(0,2).join('');
+            
+            const dropdown = document.createElement('div');
+            dropdown.className = 'dropdown';
+
+            const nameBtn = document.createElement('button');
+            nameBtn.className = 'dropdown-toggle';
+            nameBtn.textContent = u.name || 'User';
+
+            const menu = document.createElement('div');
+            menu.className = 'dropdown-menu';
+
+            const savedItem = document.createElement('a');
+            savedItem.href = '/index.html';
+            savedItem.textContent = 'Home';
+            menu.appendChild(savedItem);
+
+            const logoutItem = document.createElement('a');
+            logoutItem.href = '#';
+            logoutItem.textContent = 'Logout';
+            logoutItem.addEventListener('click', (e) => {
+              e.preventDefault();
+              localStorage.removeItem('az_user');
+              location.replace('/login.html');
+            });
+            menu.appendChild(logoutItem);
+
+            dropdown.appendChild(nameBtn);
+            dropdown.appendChild(menu);
+
+            block.appendChild(img);
+            block.appendChild(dropdown);
+          }
+        }catch(e){/* noop */}
+      })();
+    </script>
   </body>
 </html>

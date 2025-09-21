@@ -7,6 +7,85 @@
     <link rel="stylesheet" href="styles.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   </head>
+  <style>
+    .user-block {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .dropdown {
+    position: relative;
+  }
+
+  .dropdown-toggle {
+    background: none;
+    border: none;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    color: var(--text-color, #fff);
+  }
+
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #fff;
+    min-width: 120px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-radius: 6px;
+    overflow: hidden;
+    z-index: 1000;
+  }
+
+  .dropdown-menu a {
+    display: block;
+    padding: 8px 12px;
+    color: #051124;
+    text-decoration: none;
+    font-size: 14px;
+  }
+
+  .dropdown-menu a:hover {
+    background: var(--accent-1);
+    color: #fff;
+  }
+
+  .dropdown:hover .dropdown-menu {
+    display: block;
+  }
+
+  .saved-btn {
+    margin-left: 12px;
+    padding: 8px 10px;
+  }
+  </style>
+  <!-- Floating Chat Widget -->
+  <div id="chat-widget" class="chat-widget hidden">
+  <div class="chat-header">
+    <button id="chat-close" class="chat-close">✖</button>
+  </div>
+  <iframe src="/agent.html" frameborder="0"></iframe>
+  </div>
+
+  <button id="chat-toggle" class="chat-toggle">
+    💬
+  </button>
+  <script>
+    const chatWidget = document.getElementById("chat-widget");
+    const chatToggle = document.getElementById("chat-toggle");
+
+    chatToggle.addEventListener("click", () => {
+      chatWidget.classList.toggle("hidden");
+    });
+    const chatClose = document.getElementById("chat-close");
+
+    chatClose.addEventListener("click", () => {
+      chatWidget.classList.add("hidden");
+    });
+  </script>
   <body>
 	<script src="/socket.io/socket.io.js"></script>
     <script>
@@ -26,21 +105,19 @@
     <main class="app">
       <!-- logged-in bar will be inserted here -->
       <header class="header">
-        <div id="userBlock" style="display:flex;align-items:center;gap:12px">
-          <!-- JS will populate user info and logout -->
-        </div>
-        <div style="margin-left:12px">
-          <a href="/saved.html" class="btn" style="padding:8px 10px">Saved</a>
+        <div id="userBlock" class="user-block">
+        <!-- JS will populate user info + dropdown -->
         </div>
         <div class="brand">
           <h1>Fynder</h1>
           <p class="tagline">Discover places — use Left/Right arrow keys to reject/save</p>
         </div>
+        <div>
         <form id="search" class="search">
           <input id="location" placeholder="Location" aria-label="location" />
           <input id="activity" placeholder="Activity" aria-label="activity" />
           <button type="submit" class="btn primary">Go</button>
-        </form>
+        </form></div>
       </header>
 
       <section id="viewport" class="viewport">
@@ -81,8 +158,40 @@
               const img = document.createElement('div');
               img.style.width='36px';img.style.height='36px';img.style.borderRadius='999px';img.style.background='linear-gradient(90deg,var(--accent-1),var(--accent-2))';img.style.display='inline-flex';img.style.alignItems='center';img.style.justifyContent='center';img.style.color='#051124';img.style.fontWeight='700';img.textContent = (u.name||'U').split(' ').map(s=>s[0]).slice(0,2).join('');
               const name = document.createElement('div');name.style.fontWeight='600';name.style.fontSize='14px';name.textContent = u.name || 'User';
-              const out = document.createElement('button');out.className='btn primary';out.style.padding='8px 10px';out.style.fontSize='13px';out.textContent='Logout';out.addEventListener('click', ()=>{ localStorage.removeItem('az_user'); location.replace('/login.html'); });
-              block.appendChild(img); block.appendChild(name); block.appendChild(out);
+              block.appendChild(img);
+
+              // dropdown wrapper
+              const dropdown = document.createElement('div');
+              dropdown.className = 'dropdown';
+
+              // clickable profile name
+              const nameBtn = document.createElement('button');
+              nameBtn.className = 'dropdown-toggle';
+              nameBtn.textContent = u.name || 'User';
+
+              // dropdown content
+              const menu = document.createElement('div');
+              menu.className = 'dropdown-menu';
+
+              // Saved item
+              const savedItem = document.createElement('a');
+              savedItem.href = '/saved.html';
+              savedItem.textContent = 'Saved';
+              menu.appendChild(savedItem);
+
+              // Logout item
+              const logoutItem = document.createElement('a');
+              logoutItem.href = '#';
+              logoutItem.textContent = 'Logout';
+              logoutItem.addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.removeItem('az_user');
+                location.replace('/login.html');
+              });
+              menu.appendChild(logoutItem);
+              dropdown.appendChild(nameBtn);
+              dropdown.appendChild(menu);
+              block.appendChild(dropdown);
             }
           }catch(e){/* noop */}
         })();
@@ -433,10 +542,6 @@
         observer.observe(stack, { childList: true });
       </script>
     </main>
-    <!-- Chatbot button -->
-    <a href="agent.html" class="chat-btn" aria-label="Chatbot">
-      💬
-    </a>
 
     <style>
       .chat-btn {
