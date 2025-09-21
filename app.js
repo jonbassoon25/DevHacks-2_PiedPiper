@@ -2,6 +2,9 @@
 
 const express = require('express');
 
+const session = require('express-session');
+const passport = require('passport');
+
 const app = express();
 
 const http = require('http').Server(app);
@@ -10,10 +13,32 @@ const io = require('socket.io')(http);
 
 const path = require('path');
 
+require('dotenv').config();
+
+// OAuth routes
+const authRoutes = require('./auth');
+
 //------------------------------------------------------------------------------------//
 //File loads
 
 const LocationDatabase = require(__dirname + "/location_database.json"); // { row number: [...row] }
+
+// ------------------
+// Session and Passport Setup  (ADD BELOW FILE LOADS)
+// ------------------
+app.use(session({
+    secret: process.env.SESSION_SECRET, 
+    resave: false,
+    saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// ------------------
+// Mount OAuth routes (ADD BELOW PASSPORT INIT)
+// ------------------
+app.use('/', authRoutes);
 
 //------------------------------------------------------------------------------------//
 //App Commands
@@ -23,7 +48,7 @@ app.use(express.static(path.join(__dirname, 'Client-Files')));
 
 //Send user index.html when they load the url
 app.get('/', function(req, res){
-	res.sendFile(__dirname + 'Client-Files/index.html');
+	res.sendFile(path.join(__dirname, 'Client-Files', 'index.html'));
 });
 
 //------------------------------------------------------------------------------------//
