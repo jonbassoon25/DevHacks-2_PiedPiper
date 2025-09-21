@@ -67,13 +67,38 @@ io.on('connection', (socket) => {
 			count = data["count"];
 		}
 		console.log(data);
-		// TODO: return selected database entries as a list [ [database row], [database row], ... ]
+		let payload = []
+		while (payload.length < count) {
+			// Randomly select a entry (TODO: stop from recommending previous recommendations)
+			let entryIndex = Object.keys(LocationDatabase)[Math.trunc(Math.random() * Object.keys(LocationDatabase).length)];
+			let randomEntry = LocationDatabase[entryIndex];
+			
+			// Check with the ML to decide if this entry will be kept
+			
+
+			// Format and add the entry, if applicable
+			randomEntry = {
+				"ID": randomEntry[0],
+				"Name": randomEntry[1],
+				"Rating": randomEntry[2],
+				"Reviews": randomEntry[3],
+				"URL": randomEntry[4],
+				"Description": randomEntry[5],
+				"Location": randomEntry[6]
+			}
+			payload.push(randomEntry);
+		}
+		// return selected database entries as a list [ {database row}, {database row}, ... ]
+		socket.emit("next_entries", payload);
 	});
 
 	socket.on("user_feedback", (data) => {
 		let liked = data["liked"] == true;
 		let entry = data["place"];
-		console.log(data);
+		
+		console.log(entry);
+		// Update the q-values of the network based on the response of the liked/disliked entry
+
 	});
 
 	// When a user has disconnected
