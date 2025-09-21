@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot Interface</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <script>
+        const socket = io();
         tailwind.config = {
             darkMode: 'class',
             theme: {
@@ -146,10 +148,6 @@
             const socketStatus = document.getElementById('socket-status');
             const newChatBtn = document.getElementById('new-chat-btn');
             
-            // Note: Using a public echo WebSocket server for demonstration.
-            // It will echo back any message you send.
-            const socketUrl = 'ws://localhost:8765';
-            let socket;
 
             function startNewChat() {
                 chatWindow.innerHTML = '';
@@ -165,48 +163,6 @@
                     </div>
                 `;
                 chatWindow.appendChild(welcomeElement);
-            }
-
-            function connectWebSocket() {
-                console.log('Attempting to connect to WebSocket...');
-                socket = new WebSocket(socketUrl);
-
-                socket.onopen = function(event) {
-                    console.log('WebSocket connection established.');
-                    updateSocketStatus(true);
-                };
-
-                socket.onmessage = function(event) {
-                    console.log('Message received from server:', event.data);
-                    const typingIndicator = document.getElementById('typing-indicator');
-                    if (typingIndicator) {
-                        typingIndicator.remove();
-                    }
-                    appendBotMessage(event.data);
-                };
-
-                socket.onerror = function(event) {
-                    console.error('WebSocket error:', event);
-                    updateSocketStatus(false);
-                };
-                
-                socket.onclose = function(event) {
-                    console.log('WebSocket connection closed. Attempting to reconnect...');
-                    updateSocketStatus(false);
-                    setTimeout(connectWebSocket, 3000); 
-                };
-            }
-
-            function updateSocketStatus(isConnected) {
-                const statusText = isConnected ? 'CONNECTED' : 'DISCONNECTED';
-                const colorClass = isConnected ? 'text-green-500' : 'text-red-500';
-                const bgColorClass = isConnected ? 'bg-green-500' : 'bg-red-500';
-
-                socketStatus.innerHTML = `
-                    <span class="w-2 h-2 ${bgColorClass} rounded-full mr-2"></span>
-                    ${statusText}
-                `;
-                socketStatus.className = `text-xs font-semibold ${colorClass} flex items-center`;
             }
 
             function scrollToBottom() {
@@ -289,15 +245,20 @@
                 });
             }
 
+            socket.on('agent_response', (data) => {
+                appendBotMessage(data.response);
+                document.getElementById('typing-indicator')?.remove();
+            });
+
             messageForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const message = messageInput.value.trim();
-                if (message && socket && socket.readyState === WebSocket.OPEN) {
+                if (message && socket) {
                     appendUserMessage(message);
-                    socket.send(message);
+                    socket.emit("agent_submit", {"query": message});
                     messageInput.value = '';
                     showTypingIndicator();
-                } else if (!socket || socket.readyState !== WebSocket.OPEN) {
+                } else if (!socket) {
                     // Using a custom modal/toast in a real app would be better.
                     // For this example, we'll keep the alert but note its limitations.
                     console.warn('WebSocket is not connected. Please wait.');

@@ -112,6 +112,16 @@ io.on('connection', (socket) => {
 
 	});
 
+	socket.on("agent_submit", (data) => {
+		const spawn = require('child_process').spawn;
+		const pyProcess = spawn('python', [__dirname + '/fetcher.py', data["query"]]);
+		pyProcess.stdout.on('data', (data) => {
+			let response = data.toString();
+			console.log("Python Response: " + response);
+			socket.emit("agent_response", {"response": response});
+		});
+	});
+
 	// When a user has disconnected
 	socket.on('disconnect', () => {
 		connections = io.engine.clientsCount;
@@ -119,9 +129,12 @@ io.on('connection', (socket) => {
 	});
 });
 
+
+
 //------------------------------------------------------------------------------------//
 //Host server on port 8000
 
 http.listen(8000, () => {
    console.log('App Started on port 8000');
 });
+

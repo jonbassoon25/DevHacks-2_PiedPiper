@@ -1,13 +1,15 @@
 from supermemory import Supermemory
 import requests
 import json
+import sys
+
+query = sys.argv[1]
 
 GEMINI_API_KEY = "AIzaSyAkvDsC5hBAWi_-7d-jb1Pdkz7u8_lO0eE"
 
 
-client = Supermemory(api_key="sm_7v34ad1Mm5XeKoiM2gNd2V_IZMERieGyPMWxXBJEeoiTNLeVyBKFznTiBielvymJErPcdiCrXTlXDevMqWYKirP")
 
-query = "Kiwanis recreation center features what?"
+client = Supermemory(api_key="sm_7v34ad1Mm5XeKoiM2gNd2V_IZMERieGyPMWxXBJEeoiTNLeVyBKFznTiBielvymJErPcdiCrXTlXDevMqWYKirP")
 
 results = client.search.memories(q=query, limit=3)
 
@@ -27,7 +29,7 @@ def get_gemini_response(user_query, context_memories):
         f"CONTEXT:\n{context_string}\n\n"
         f"USER_QUERY:\n{user_query}\n\n"
         f"Based on the CONTEXT, answer the USER_QUERY. If the context is not relevant, "
-        f"use your general knowledge to provide a helpful response."
+        f"use your general knowledge to provide a helpful response. Do not repeat the question. Be as detailed as possible and generalize your memories if necessary."
     )
     
     # The payload for the API request
@@ -67,6 +69,7 @@ def get_gemini_response(user_query, context_memories):
     except (KeyError, IndexError) as e:
         return f"Could not parse the API response. Error: {e}"
 
-print(extracted_memories)
+#print(extracted_memories)
 extracted_memories = ", ".join(extracted_memories)
 print(get_gemini_response(query, extracted_memories))
+sys.stdout.flush()
