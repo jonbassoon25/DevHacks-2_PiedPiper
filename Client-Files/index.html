@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>AZ Places — Swipe & Discover</title>
+  <title>Fynder — Swipe & Discover</title>
     <link rel="stylesheet" href="styles.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   </head>
@@ -29,9 +29,12 @@
         <div id="userBlock" style="display:flex;align-items:center;gap:12px">
           <!-- JS will populate user info and logout -->
         </div>
+        <div style="margin-left:12px">
+          <a href="/saved.html" class="btn" style="padding:8px 10px">Saved</a>
+        </div>
         <div class="brand">
-          <h1>AZ Places</h1>
-          <p class="tagline">Find things to do in Arizona — swipe right to save</p>
+          <h1>Fynder</h1>
+          <p class="tagline">Discover places — swipe right to save</p>
         </div>
         <form id="search" class="search">
           <input id="location" placeholder="Location" aria-label="location" />
@@ -151,21 +154,77 @@
           updateStackVisibility();
         }
 
+        // Shared drag state to avoid multiple global handlers and improve reliability
+        let activeDrag = null; // { card, startX, startY, pointerId }
+
         function addDrag(card) {
-          let startX=0,startY=0,drag=false;
-          let lastX = 0;
-          function down(e){ drag=true; startX = e.clientX || e.touches?.[0]?.clientX; startY = e.clientY || e.touches?.[0]?.clientY; lastX = startX; card.classList.add('dragging'); card.style.transition = 'none'; }
-          function move(e){ if(!drag) return; const x = (e.clientX||e.touches?.[0]?.clientX)-startX; const y = (e.clientY||e.touches?.[0]?.clientY)-startY; lastX = x; const rot = Math.max(Math.min(x/12, 25), -25); const scale = 1 - Math.min(Math.abs(x)/1500, 0.06); card.style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg) scale(${scale})`; 
-            // toggle badges
-            if (x > 30) { card.classList.add('liking'); card.classList.remove('noping'); }
-            else if (x < -30) { card.classList.add('noping'); card.classList.remove('liking'); }
-            else { card.classList.remove('liking'); card.classList.remove('noping'); }
-          }
-          function up(e){ if(!drag) return; drag=false; card.classList.remove('dragging'); card.style.transition = ''; const endX = e.clientX || (e.changedTouches && e.changedTouches[0].clientX) || 0; const delta = endX - startX; if(Math.abs(delta)>120){ const liked = delta>0; card.classList.remove('liking'); card.classList.remove('noping'); swipe(card, liked); } else { card.style.transform=''; card.classList.remove('liking'); card.classList.remove('noping'); } }
-          card.addEventListener('pointerdown', down);
-          window.addEventListener('pointermove', move);
-          window.addEventListener('pointerup', up);
+          const imgArea = card.querySelector('.card__image');
+          if (!imgArea) return;
+          imgArea.addEventListener('pointerdown', (e) => {
+            // start drag only when pressing on image area
+            const startX = e.clientX || (e.touches && e.touches[0] && e.touches[0].clientX) || 0;
+            const startY = e.clientY || (e.touches && e.touches[0] && e.touches[0].clientY) || 0;
+            activeDrag = { card, startX, startY, pointerId: e.pointerId || null };
+            card.classList.add('dragging');
+            card.style.transition = 'none';
+            try { if (e.pointerId && card.setPointerCapture) card.setPointerCapture(e.pointerId); } catch (err) {}
+          });
         }
+
+        // global move/up handlers operate on the single activeDrag
+        window.addEventListener('pointermove', (e) => {
+          if (!activeDrag) return;
+          // ignore pointer events from other pointers
+          if (activeDrag.pointerId != null && e.pointerId !== activeDrag.pointerId) return;
+          const { card, startX, startY } = activeDrag;
+          const x = (e.clientX || 0) - startX;
+          const y = (e.clientY || 0) - startY;
+          const rot = Math.max(Math.min(x/12, 25), -25);
+          const scale = 1 - Math.min(Math.abs(x)/1500, 0.06);
+          card.style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg) scale(${scale})`;
+          if (x > 30) { card.classList.add('liking'); card.classList.remove('noping'); }
+          else if (x < -30) { card.classList.add('noping'); card.classList.remove('liking'); }
+          else { card.classList.remove('liking'); card.classList.remove('noping'); }
+        });
+
+        function cancelActiveDrag(e) {
+          if (!activeDrag) return;
+          // if a pointerId exists, ensure we only cancel for that pointer
+          if (activeDrag.pointerId != null && e && e.pointerId !== activeDrag.pointerId) return;
+          const { card } = activeDrag;
+          try { if (activeDrag.pointerId != null && card.releasePointerCapture) card.releasePointerCapture(activeDrag.pointerId); } catch (err) {}
+          card.classList.remove('dragging');
+          card.style.transition = '';
+          card.style.transform = '';
+          card.classList.remove('liking'); card.classList.remove('noping');
+          activeDrag = null;
+        }
+
+        window.addEventListener('pointerup', (e) => {
+          if (!activeDrag) return;
+          if (activeDrag.pointerId != null && e.pointerId !== activeDrag.pointerId) return;
+          const { card, startX } = activeDrag;
+          const endX = e.clientX || 0;
+          const delta = endX - startX;
+          // release pointer capture
+          try { if (activeDrag.pointerId != null && card.releasePointerCapture) card.releasePointerCapture(activeDrag.pointerId); } catch (err) {}
+          card.classList.remove('dragging');
+          card.style.transition = '';
+          const threshold = 100;
+          if (Math.abs(delta) > threshold) {
+            const liked = delta > 0;
+            card.classList.remove('liking'); card.classList.remove('noping');
+            swipe(card, liked);
+          } else {
+            card.style.transform = '';
+            card.classList.remove('liking'); card.classList.remove('noping');
+          }
+          activeDrag = null;
+        });
+
+        // cleanup handlers for cancelled pointers or lost capture
+        window.addEventListener('pointercancel', cancelActiveDrag);
+        window.addEventListener('lostpointercapture', cancelActiveDrag);
 
         function swipe(card, liked){ 
           card.style.transition='transform 300ms ease, opacity 300ms'; 
@@ -178,6 +237,20 @@
             const payload = { action: liked ? 'like' : 'dislike', place: card.__place || null };
             socket.emit('user_feedback', payload);
           } catch (e) { console.warn('feedback emit failed', e); }
+          // persist liked places to localStorage
+          if (liked && card.__place) {
+            try{
+              const key = 'fynder_saved';
+              const raw = localStorage.getItem(key);
+              const arr = raw ? JSON.parse(raw) : [];
+              // dedupe by URL or Name
+              const exists = arr.some(x => (x.URL && card.__place.URL && x.URL === card.__place.URL) || (x.Name && card.__place.Name && x.Name === card.__place.Name));
+              if (!exists) {
+                arr.push(card.__place);
+                localStorage.setItem(key, JSON.stringify(arr));
+              }
+            }catch(e){console.warn('save failed', e)}
+          }
           setTimeout(()=>{ 
             card.remove(); 
             // reveal the next top card
@@ -192,9 +265,42 @@
           },350); 
         }
 
-        likeBtn.addEventListener('click', ()=>{ const top = stack.querySelector('.card'); if(top) swipe(top, true); });
-        nopeBtn.addEventListener('click', ()=>{ const top = stack.querySelector('.card'); if(top) swipe(top, false); });
+  // (button handlers wired below using getTopCard)
   rewindBtn.addEventListener('click', ()=>{ const last = history.pop(); if(last){ last.style.opacity='1'; last.style.transform=''; stack.appendChild(last); updateStackVisibility(); } });
+
+        // Helper to find the visible/top card (checks display and computed z-index)
+        function getTopCard(){
+          const cards = Array.from(stack.querySelectorAll('.card'));
+          if (!cards.length) return null;
+          // Prefer cards that are visible (not display:none)
+          const vis = cards.filter(c => window.getComputedStyle(c).display !== 'none');
+          const candidates = vis.length ? vis : cards;
+          let top = null; let topZ = -Infinity;
+          candidates.forEach(c => {
+            const z = parseInt(window.getComputedStyle(c).zIndex || 0, 10);
+            const val = Number.isFinite(z) ? z : 0;
+            if (val > topZ) { topZ = val; top = c; }
+          });
+          if (!top) top = candidates[candidates.length - 1];
+          return top;
+        }
+
+        // wire buttons to the actual top card
+        likeBtn.addEventListener('click', ()=>{ const top = getTopCard(); if(top) swipe(top, true); });
+        nopeBtn.addEventListener('click', ()=>{ const top = getTopCard(); if(top) swipe(top, false); });
+
+        // keyboard controls: ArrowLeft = reject, ArrowRight = like
+        window.addEventListener('keydown', (e) => {
+          // ignore when user is typing in an input, textarea or contenteditable
+          const tag = document.activeElement && document.activeElement.tagName;
+          const isTyping = tag === 'INPUT' || tag === 'TEXTAREA' || document.activeElement.isContentEditable;
+          if (isTyping) return;
+          if (e.key === 'ArrowLeft') {
+            const top = getTopCard(); if (top) swipe(top, false);
+          } else if (e.key === 'ArrowRight') {
+            const top = getTopCard(); if (top) swipe(top, true);
+          }
+        });
 
         // show only the top card, hide other articles inside the stack
         function updateStackVisibility(){

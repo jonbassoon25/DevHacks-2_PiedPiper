@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Saved — Fynder</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+      .saved-list{padding:28px;max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:16px}
+      .saved-item{display:flex;gap:14px;align-items:flex-start;background:var(--card-bg);padding:12px;border-radius:12px}
+      .saved-item img{width:140px;height:96px;object-fit:cover;border-radius:8px;flex:0 0 140px}
+      .saved-meta h3{margin:0 0 6px;font-size:18px}
+      .saved-meta p{margin:0;color:var(--muted)}
+      .saved-actions{margin-left:auto;display:flex;gap:8px}
+      .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);padding:8px 10px;border-radius:8px}
+    </style>
+  </head>
+  <body>
+    <main class="app">
+      <header class="header">
+        <div class="brand"><h1>Fynder</h1><p class="tagline">Saved places you liked</p></div>
+        <div style="display:flex;gap:12px;align-items:center">
+          <a href="/" class="btn primary" style="padding:8px 12px;font-size:14px">Back</a>
+          <button id="clearAll" class="btn ghost">Clear all</button>
+        </div>
+      </header>
+
+      <section class="viewport">
+        <div id="savedList" class="saved-list">
+          <div class="notice">Loading saved places…</div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      function loadSaved(){
+        try{
+          const raw = localStorage.getItem('fynder_saved');
+          const arr = raw ? JSON.parse(raw) : [];
+          const list = document.getElementById('savedList');
+          list.innerHTML='';
+          if (!arr.length) { list.innerHTML = '<div class="notice">No saved places yet.</div>'; return; }
+          arr.forEach((p, idx) => {
+            const el = document.createElement('div'); el.className='saved-item';
+            const img = document.createElement('img'); img.src = p.URL || ('https://source.unsplash.com/600x400/?' + encodeURIComponent((p.Name||'place').split(' ')[0]));
+            const meta = document.createElement('div'); meta.className='saved-meta';
+            meta.innerHTML = `<h3>${p.Name||'Untitled'}</h3><p class="location">${p.Location||''}</p><p class="desc">${p.Description||''}</p>`;
+            const actions = document.createElement('div'); actions.className='saved-actions';
+            const open = document.createElement('a'); open.className='btn'; open.textContent='Open'; open.href = p.URL || '#'; open.target='_blank';
+            const remove = document.createElement('button'); remove.className='btn ghost'; remove.textContent='Remove'; remove.addEventListener('click', ()=>{ removeSaved(idx); });
+            actions.appendChild(open); actions.appendChild(remove);
+            el.appendChild(img); el.appendChild(meta); el.appendChild(actions);
+            list.appendChild(el);
+          });
+        } catch(e){ console.error(e); }
+      }
+      function removeSaved(idx){
+        try{
+          const raw = localStorage.getItem('fynder_saved');
+          const arr = raw ? JSON.parse(raw) : [];
+          arr.splice(idx,1);
+          localStorage.setItem('fynder_saved', JSON.stringify(arr));
+          loadSaved();
+        }catch(e){console.error(e)}
+      }
+      document.getElementById('clearAll').addEventListener('click', ()=>{ if(confirm('Clear all saved places?')){ localStorage.removeItem('fynder_saved'); loadSaved(); } });
+      loadSaved();
+    </script>
+  </body>
+</html>
