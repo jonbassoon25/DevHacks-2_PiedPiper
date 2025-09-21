@@ -18,7 +18,7 @@ CSV_FILENAME = "../location_database.csv"
 TAGS_ARRAY_NPY = "location_tags.npy"
 TAGS_ARRAY_JSON = "location_tags.json"
 OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
-OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "gemma2")
+OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "gpt-oss:20b")
 
 
 def parse_args():
@@ -164,6 +164,7 @@ def main():
         else:
             tags = simple_keyword_tags(text)
         tags_for_rows.append(tags)
+        print(tags)
         print(f"[Tagging] {i+1}/{n}", end='\r')
 
     arr = np.array(tags_for_rows, dtype=object)
