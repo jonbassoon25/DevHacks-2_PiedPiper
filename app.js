@@ -52,10 +52,19 @@ io.on('connection', (socket) => {
 			// Check with the ML to decide if this entry will be kept
 			
 
-			// Add the entry, if applicable
+			// Format and add the entry, if applicable
+			randomEntry = {
+				"ID": randomEntry[0],
+				"Name": randomEntry[1],
+				"Rating": randomEntry[2],
+				"Reviews": randomEntry[3],
+				"URL": randomEntry[4],
+				"Description": randomEntry[5],
+				"Location": randomEntry[6]
+			}
 			payload.push(randomEntry);
 		}
-		// return selected database entries as a list [ [database row], [database row], ... ]
+		// return selected database entries as a list [ {database row}, {database row}, ... ]
 		socket.emit("next_entries", payload);
 	});
 
