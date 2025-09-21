@@ -192,6 +192,27 @@
         nopeBtn.addEventListener('click', ()=>{ const top = stack.querySelector('.card'); if(top) swipe(top, false); });
   rewindBtn.addEventListener('click', ()=>{ const last = history.pop(); if(last){ last.style.opacity='1'; last.style.transform=''; stack.appendChild(last); updateStackVisibility(); } });
 
+        // Helper to find the visible/top card (checks display and computed z-index)
+        function getTopCard(){
+          const cards = Array.from(stack.querySelectorAll('.card'));
+          if (!cards.length) return null;
+          // Prefer cards that are visible (not display:none)
+          const vis = cards.filter(c => window.getComputedStyle(c).display !== 'none');
+          const candidates = vis.length ? vis : cards;
+          let top = null; let topZ = -Infinity;
+          candidates.forEach(c => {
+            const z = parseInt(window.getComputedStyle(c).zIndex || 0, 10);
+            const val = Number.isFinite(z) ? z : 0;
+            if (val > topZ) { topZ = val; top = c; }
+          });
+          if (!top) top = candidates[candidates.length - 1];
+          return top;
+        }
+
+        // wire buttons to the actual top card
+        likeBtn.addEventListener('click', ()=>{ const top = getTopCard(); if(top) swipe(top, true); });
+        nopeBtn.addEventListener('click', ()=>{ const top = getTopCard(); if(top) swipe(top, false); });
+
         // show only the top card, hide other articles inside the stack
         function updateStackVisibility(){
           const cards = Array.from(stack.querySelectorAll('.card'));
