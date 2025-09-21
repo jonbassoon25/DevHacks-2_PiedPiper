@@ -6,7 +6,7 @@ Summary run order (canonical)
 1. Start Ollama (gemma2) and keep it running.
 2. Generate per-row tags: Python_ML/build_tags.py → produces `location_tags.json` and `location_tags.npy`.
 3. Vectorize tags: Python_ML/vectorize_tags.py → produces `location_vectors.npy`.
-4. Start the app: `node app.js` (project root) — app reads the vectors.
+4. Start the app: `node app.js`
 
 Prerequisites
 - Python 3.12.x
