@@ -510,22 +510,6 @@
           }
         });
 
-		window.addEventListener('load', async (e)=>{
-          e.preventDefault();
-          stack.innerHTML = `<div class="notice">Requesting results...</div>`;
-          const loc = locationInput.value.trim();
-          const act = activityInput.value.trim();
-          try {
-            const rows = await requestNext(3, loc, act);
-            // server may send an object wrapper
-            const data = Array.isArray(rows) ? rows : (rows && rows.results) ? rows.results : [];
-            renderRows(data, false);
-          } catch (err) {
-            console.error(err);
-            stack.innerHTML = `<div class="notice">Request failed — check server logs.</div>`;
-          }
-        });
-
         // when remaining cards low, request more
         const observer = new MutationObserver(async ()=>{
           const remaining = stack.querySelectorAll('.card').length;

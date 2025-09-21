@@ -97,12 +97,17 @@ io.on('connection', (socket) => {
 			count = data["count"];
 		}
 		let id = data["id"];
+		let location = data["location"]
 		//console.log(data);
 		let payload = []
 		while (payload.length < count) {
 			// Randomly select a entry (TODO: stop from recommending previous recommendations)
 			let entryIndex = Object.keys(LocationDatabase)[Math.trunc(Math.random() * Object.keys(LocationDatabase).length)];
 			let randomEntry = LocationDatabase[entryIndex];
+
+			if (!(location == '' || randomEntry[6].toLowerCase().includes(location.trim().toLowerCase()))) {
+				continue;
+			}
 			
 			// Check with the ML to decide if this entry will be kept
 			console.log(__dirname + "/Python_ML/DQN.py" + " " + __dirname + "/user_models/" + id + ".pkl" + " " +  "-d" + " " +  "" + entryIndex);
