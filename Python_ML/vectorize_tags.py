@@ -18,4 +18,4 @@ for i in range(vectors.shape[0]):
 		else:
 			vectors[i][j] = 0
 
-np.save("./location_tag_vectors.npy", vectors, True)
+np.save("./Python_ML/location_tag_vectors.npy", vectors, True)
