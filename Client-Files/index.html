@@ -119,9 +119,13 @@
             return;
           }
           for (let i = rows.length - 1; i >= 0; i--) {
-            const c = makeCard(rows[i]);
-            c.style.setProperty('--i', i);
-            stack.appendChild(c);
+              const c = makeCard(rows[i]);
+              // set index so CSS can stagger and set z-index so top cards are clickable
+              c.style.setProperty('--i', i);
+              // higher i should be lower in the stack; invert for z-index
+              const z = 1000 + (rows.length - i);
+              c.style.zIndex = z;
+              stack.appendChild(c);
           }
         }
 
