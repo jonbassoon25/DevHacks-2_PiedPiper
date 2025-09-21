@@ -13,8 +13,7 @@ const path = require('path');
 //------------------------------------------------------------------------------------//
 //File loads
 
-//const LocationDatabase = require("location_database.json");
-
+const LocationDatabase = require(__dirname + "/location_database.json"); // { row number: [...row] }
 
 //------------------------------------------------------------------------------------//
 //App Commands
