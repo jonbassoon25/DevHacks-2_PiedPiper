@@ -118,15 +118,33 @@
             if (!append) stack.innerHTML = `<div class="notice">No results returned.</div>`;
             return;
           }
+          // append new cards
           for (let i = rows.length - 1; i >= 0; i--) {
               const c = makeCard(rows[i]);
-              // set index so CSS can stagger and set z-index so top cards are clickable
-              c.style.setProperty('--i', i);
-              // higher i should be lower in the stack; invert for z-index
-              const z = 1000 + (rows.length - i);
-              c.style.zIndex = z;
               stack.appendChild(c);
           }
+          // enforce a maximum kept cards in DOM (keep latest N)
+          const keepLast = 6;
+          const all = Array.from(stack.querySelectorAll('.card'));
+          // remove older cards if too many
+          if (all.length > keepLast) {
+            const removeCount = all.length - keepLast;
+            for (let r = 0; r < removeCount; r++) {
+              const rem = all[r];
+              if (rem && rem.parentNode) rem.parentNode.removeChild(rem);
+            }
+          }
+          // recompute indices and z-index for remaining cards
+          const remaining = Array.from(stack.querySelectorAll('.card'));
+          remaining.forEach((c, idx) => {
+            // idx 0 is bottom, last is top
+            const i = idx;
+            c.style.setProperty('--i', i);
+            c.style.zIndex = 1000 + (idx + 1);
+            // ensure visible via opacity-based styling
+            c.style.transition = 'opacity 260ms ease, transform 260ms ease';
+          });
+          updateStackVisibility();
         }
 
         function addDrag(card) {
@@ -156,12 +174,78 @@
             const payload = { action: liked ? 'like' : 'dislike', place: card.__place || null };
             socket.emit('user_feedback', payload);
           } catch (e) { console.warn('feedback emit failed', e); }
-          setTimeout(()=>{ card.remove(); if(!stack.querySelector('.card')) stack.innerHTML=`<div class="notice">You're all caught up.</div>`; },350); 
+          setTimeout(()=>{ 
+            card.remove(); 
+            // reveal the next top card
+            // recompute indices and visibility after removal
+            const remaining = Array.from(stack.querySelectorAll('.card'));
+            remaining.forEach((c, idx) => {
+              c.style.setProperty('--i', idx);
+              c.style.zIndex = 1000 + (idx + 1);
+            });
+            updateStackVisibility();
+            if(!stack.querySelector('.card')) stack.innerHTML=`<div class="notice">You're all caught up.</div>`; 
+          },350); 
         }
 
         likeBtn.addEventListener('click', ()=>{ const top = stack.querySelector('.card'); if(top) swipe(top, true); });
         nopeBtn.addEventListener('click', ()=>{ const top = stack.querySelector('.card'); if(top) swipe(top, false); });
-        rewindBtn.addEventListener('click', ()=>{ const last = history.pop(); if(last){ last.style.opacity='1'; last.style.transform=''; stack.appendChild(last); } });
+  rewindBtn.addEventListener('click', ()=>{ const last = history.pop(); if(last){ last.style.opacity='1'; last.style.transform=''; stack.appendChild(last); updateStackVisibility(); } });
+
+        // show only the top card, hide other articles inside the stack
+        function updateStackVisibility(){
+          const cards = Array.from(stack.querySelectorAll('.card'));
+          if (!cards.length) return;
+          // determine the card with the highest numeric z-index
+          let top = null;
+          let topZ = -Infinity;
+          cards.forEach(c => {
+            const z = parseInt(window.getComputedStyle(c).zIndex || 0, 10);
+            if (!isFinite(z)) return;
+            if (z > topZ) { topZ = z; top = c; }
+          });
+          // fallback to last card if computed z-index failed
+          if (!top) top = cards[cards.length - 1];
+          // hide all non-top cards completely
+          cards.forEach(c => {
+            if (c === top) {
+              c.style.display = '';
+              c.style.opacity = '1';
+              c.style.pointerEvents = '';
+              // restore the centered transform
+              c.style.transform = `translate(-50%, calc(-50% + var(--offset-y))) scale(var(--offset-scale))`;
+            } else {
+              c.style.display = 'none';
+              c.style.opacity = '0';
+              c.style.pointerEvents = 'none';
+            }
+          });
+        }
+
+        // Observe style attribute changes on cards (so changes to z-index trigger visibility updates)
+        const cardStyleObserver = new MutationObserver(muts => {
+          let shouldUpdate = false;
+          for (const m of muts) {
+            if (m.type === 'attributes' && m.attributeName === 'style') {
+              shouldUpdate = true; break;
+            }
+          }
+          if (shouldUpdate) updateStackVisibility();
+        });
+
+        // observe existing cards and future additions
+        const cardsRootObserver = new MutationObserver(muts => {
+          for (const m of muts) {
+            if (m.type === 'childList') {
+              m.addedNodes.forEach(n => { if (n.nodeType === 1 && n.classList && n.classList.contains('card')) cardStyleObserver.observe(n, { attributes: true, attributeFilter: ['style'] }); });
+              m.removedNodes.forEach(n => { if (n.nodeType === 1 && n.classList && n.classList.contains('card')) cardStyleObserver.disconnect(); });
+            }
+          }
+        });
+        // start observing the stack for added/removed cards
+        cardsRootObserver.observe(stack, { childList: true });
+        // attach observer to any currently existing cards
+        Array.from(stack.querySelectorAll('.card')).forEach(c => cardStyleObserver.observe(c, { attributes: true, attributeFilter: ['style'] }));
 
         // Emit the websocket request per your spec: event name _next_next_entries with an object containing key `count`.
         async function requestNext(count, location, activity) {
