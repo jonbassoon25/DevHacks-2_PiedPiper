@@ -60,7 +60,6 @@ location_vectors = np.load("./Python_ML/location_vectors.npy")
 
 model = None
 if os.path.exists(model_path):
-	model = joblib.load(model_path)
 	try:
 		model = joblib.load(model_path)
 	except:
