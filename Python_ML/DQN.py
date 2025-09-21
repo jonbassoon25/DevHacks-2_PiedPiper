@@ -3,11 +3,12 @@
 
 import numpy as np
 import tensorflow as tf
+import sys, os, random
+import joblib
 
 class recommendation_model(tf.keras.Model):
 	def __init__(self, num_inputs, num_actions, 
-			learning_rate = 0.001, 
-			discount_factor = 0.99, exploration_prob = 1.0, 
+			learning_rate = 0.001, exploration_prob = 1.0, 
 			exploration_decay = 0.995, min_exploration_prob = 0.05):
 		super(recommendation_model, self).__init__()
 		self.dense1 = tf.keras.layers.Dense(num_inputs, activation='relu') # first hidden layer / input layer
@@ -17,7 +18,6 @@ class recommendation_model(tf.keras.Model):
 		self.loss_fn = tf.keras.losses.MeanSquaredError() #loss function
 		self.optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate) #optimizer
 
-		self.discount_factor = discount_factor
 		self.exploration_prob = exploration_prob
 		self.exploration_decay = exploration_decay
 		self.min_exploration_prob = min_exploration_prob
@@ -28,7 +28,10 @@ class recommendation_model(tf.keras.Model):
 		return self.output_layer(x) #run second layer to output layer
 	
 	def make_decision(self, input_vector):
-		action = np.argmax(self(input_vector[np.newaxis, :]))
+		if (random.random() < self.exploration_prob):
+			action = np.argmax(self(input_vector[np.newaxis, :]))
+		else:
+			action = round(random.random())
 		return action
 	
 	def update_qvals(self, last_action, reward, last_input_vector):
@@ -40,3 +43,38 @@ class recommendation_model(tf.keras.Model):
 
 		gradients = tape.gradient(loss, self.trainable_variables)
 		self.optimizer.apply_gradients(zip(gradients, self.trainable_variables))
+
+		self.exploration_prob = max(self.exploration_prob * self.exploration_decay, self.min_exploration_prob)
+
+
+# Run the python module & load the network and other stuff
+model_path = sys.argv[1]
+run_arg = sys.argv[2]
+
+
+location_vectors = np.load("./Python_ML/location_vectors.npy")
+
+model = None
+if os.path.exists(model_path):
+	model = joblib.load(model_path)
+else:
+	model = recommendation_model(location_vectors.shape[1], 2)
+
+# Get inputs or update q vals
+if (run_arg == '-d'):
+	# Decide: -d index-int -> str(keep, next)
+	input_vector_index = int(sys.argv[3])
+	input_vector = location_vectors[input_vector_index]
+	decision = model.make_decision(input_vector)
+	print("keep" if decision else "next")
+elif (run_arg == '-u'):
+	# Update: -u index-int decision-str reward-0/1 -> None
+	input_vector_index = int(sys.argv[3])
+	last_decision = sys.argv[4]
+	reward = sys.argv[5]
+	input_vector = location_vectors[input_vector_index]
+	last_decision = 1 if last_decision == "keep" else 0
+
+	model.update_qvals(last_decision, reward, input_vector)
+
+	joblib.dump(model, model_path)
