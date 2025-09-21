@@ -8,15 +8,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   </head>
   <body>
+    <script>
+      // redirect to login if not authenticated (client-side simulated)
+      try {
+        const u = localStorage.getItem('az_user');
+        if (!u || u === 'null') {
+          if (!location.pathname.endsWith('/login.html')) location.replace('/login.html');
+        }
+      } catch(e){}
+    </script>
     <main class="app">
+      <!-- logged-in bar will be inserted here -->
       <header class="header">
+        <div id="userBlock" style="display:flex;align-items:center;gap:12px">
+          <!-- JS will populate user info and logout -->
+        </div>
         <div class="brand">
           <h1>AZ Places</h1>
           <p class="tagline">Find things to do in Arizona — swipe right to save</p>
         </div>
         <form id="search" class="search">
-          <input id="location" placeholder="Location (e.g. Chandler, Arizona)" aria-label="location" />
-          <input id="activity" placeholder="Activity (e.g. Hiking, Museum, Coffee)" aria-label="activity" />
+          <input id="location" placeholder="Location" aria-label="location" />
+          <input id="activity" placeholder="Activity" aria-label="activity" />
           <button type="submit" class="btn primary">Go</button>
         </form>
       </header>
@@ -50,6 +63,22 @@
 
       <script src="/socket.io/socket.io.js"></script>
       <script>
+        // populate user UI
+        (function(){
+          try{
+            const raw = localStorage.getItem('az_user');
+            const block = document.getElementById('userBlock');
+            if (raw && block){
+              const u = JSON.parse(raw);
+              const img = document.createElement('div');
+              img.style.width='36px';img.style.height='36px';img.style.borderRadius='999px';img.style.background='linear-gradient(90deg,var(--accent-1),var(--accent-2))';img.style.display='inline-flex';img.style.alignItems='center';img.style.justifyContent='center';img.style.color='#051124';img.style.fontWeight='700';img.textContent = (u.name||'U').split(' ').map(s=>s[0]).slice(0,2).join('');
+              const name = document.createElement('div');name.style.fontWeight='600';name.style.fontSize='14px';name.textContent = u.name || 'User';
+              const out = document.createElement('button');out.className='btn primary';out.style.padding='8px 10px';out.style.fontSize='13px';out.textContent='Logout';out.addEventListener('click', ()=>{ localStorage.removeItem('az_user'); location.replace('/login.html'); });
+              block.appendChild(img); block.appendChild(name); block.appendChild(out);
+            }
+          }catch(e){/* noop */}
+        })();
+
         const socket = io();
         const stack = document.getElementById('stack');
         const tpl = document.getElementById('cardTpl');
