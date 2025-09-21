@@ -37,8 +37,8 @@
         window.location = '/';
       }
       document.getElementById('googleSign').addEventListener('click', ()=>{
-        // In a real app you'd run Google OAuth here. For this demo we simulate success.
-        setUser('Google User','google@example.com','');
+        // Redirect to backend OAuth route
+    window.location.href = '/auth/google';
       });
       document.getElementById('demo').addEventListener('click', ()=> setUser('Guest User','guest@example.com',''));
     </script>
